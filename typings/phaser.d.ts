@@ -539,7 +539,7 @@ declare type PluginObject = {
     /**
      * [description]
      */
-    default?: Array;
+    default?: Array<any>;
     /**
      * [description]
      */
