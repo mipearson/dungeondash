@@ -5,7 +5,7 @@ import DungeonFactory from "dungeon-factory";
 import Mrpas from "mrpas";
 
 const width = 61;
-const height = 60;
+const height = 40;
 
 const tileSize = 16;
 
@@ -245,7 +245,7 @@ class ReferenceScene extends Phaser.Scene {
       for (let x = 0; x < 8; x++) {
         const idx = y * 8 + x;
         level[y][x] = idx;
-        const text = this.add.text(x * 48, y * 48, idx.toString(16), {
+        const text = this.add.text(x * 32, y * 32, idx.toString(16), {
           fontSize: 14
         });
         text.setDepth(10);
@@ -259,7 +259,7 @@ class ReferenceScene extends Phaser.Scene {
     });
     const tiles = map.addTilesetImage("tiles");
     const layer = map.createStaticLayer(0, tiles, 0, 0);
-    layer.setScale(3);
+    layer.setScale(2);
   }
 }
 
