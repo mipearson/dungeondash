@@ -1,6 +1,6 @@
-import RogueDungeon from "../assets/RogueDungeon.png";
-import RoguePlayer from "../assets/RoguePlayer.png";
-import Util from "../assets/Util.png";
+import RogueDungeon from "../../assets/RogueDungeon.png";
+import RoguePlayer from "../../assets/RoguePlayer.png";
+import Util from "../../assets/Util.png";
 
 interface Tileset {
   width: number;
@@ -9,7 +9,7 @@ interface Tileset {
   indices: any;
 }
 
-export default class Tiles {
+export default class Graphics {
   static readonly dungeon: Tileset = {
     width: 16,
     height: 16,

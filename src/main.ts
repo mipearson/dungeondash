@@ -3,13 +3,7 @@ import ReferenceScene from "./scenes/ReferenceScene";
 import DungeonScene from "./scenes/DungeonScene";
 import InfoScene from "./scenes/InfoScene";
 
-import Tiles from "./tiles";
-import RogueDungeon from "../assets/RogueDungeon.png";
-import RoguePlayer from "../assets/RoguePlayer.png";
-import DungeonFactory from "dungeon-factory";
-import Mrpas from "mrpas";
-
-const game = new Phaser.Game({
+new Phaser.Game({
   type: Phaser.WEBGL,
   // TODO: OnResize
   width: window.innerWidth,
@@ -20,8 +14,6 @@ const game = new Phaser.Game({
   // scene: [ReferenceScene]
 });
 
-console.log(document.body.offsetWidth);
-console.log(document.body.offsetHeight);
 function setUpHotReload() {
   // @ts-ignore
   if (module.hot) {

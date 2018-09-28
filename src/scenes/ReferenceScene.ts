@@ -1,7 +1,7 @@
 import Phaser from "phaser";
-import Tiles from "../Tiles";
+import Graphics from "../assets/Graphics";
 
-const tileset = Tiles.dungeon;
+const tileset = Graphics.dungeon;
 
 export default class ReferenceScene extends Phaser.Scene {
   preload(): void {
