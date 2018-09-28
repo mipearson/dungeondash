@@ -22,6 +22,7 @@ export default class Map {
       width: width,
       height: height
     }) as DungeonFactoryOutput;
+
     this.width = width;
     this.height = height;
 
@@ -30,7 +31,7 @@ export default class Map {
       this.tiles.push([]);
       for (let x = 0; x < width; x++) {
         this.tiles[y][x] = new Tile(
-          dungeon.tiles[y][x].type === "wall" ? TileType.Wall : TileType.None,
+          dungeon.tiles[x][y].type === "wall" ? TileType.Wall : TileType.None,
           x,
           y,
           this
