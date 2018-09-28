@@ -36,20 +36,34 @@ export default class Tile {
   }
 
   wallIndex() {
-    const directions = ["n", "ne", "e", "se", "s", "sw", "w", "nw"];
-
     const neighbours = this.neighbours();
 
-    const lookup = directions
-      .filter(
-        dir => !neighbours[dir] || neighbours[dir]!.type === TileType.Wall
-      )
-      .join("_");
+    const walls = {
+        n: !neighbours.n || neighbours.n.type === TileType.Wall,
+        s: !neighbours.s || neighbours.s.type === TileType.Wall,
+        w: !neighbours.w || neighbours.w.type === TileType.Wall,
+        e: !neighbours.e || neighbours.e.type === TileType.Wall,
+        nw: !neighbours.nw || neighbours.nw.type === TileType.Wall,
+        ne: !neighbours.ne || neighbours.ne.type === TileType.Wall,
+        sw: !neighbours.sw || neighbours.sw.type === TileType.Wall,
+        se: !neighbours.se || neighbours.se.type === TileType.Wall
+    } 
 
-    if (!Graphics.dungeon.indices.walls[lookup]) {
-      console.log(`could not find index for ${lookup}`);
-      return Graphics.dungeon.indices.walls.nil;
-    }
-    return Graphics.dungeon.indices.walls[lookup];
+    const i = Graphics.dungeon.indices.walls;
+
+    if 
+    // const lookup = directions
+    //   .filter(
+    //     dir => !neighbours[dir] || neighbours[dir]!.type === TileType.Wall
+    //   )
+    //   .join("_");
+
+    // if (!Graphics.dungeon.indices.walls[lookup]) {
+    //   console.log(`could not find index for ${lookup}`);
+    //   return Graphics.dungeon.indices.walls.nil;
+    // }
+    // return Graphics.dungeon.indices.walls[lookup];
+
+    return i.alone;
   }
 }
