@@ -24,4 +24,42 @@ export default class Tile {
   isWall(): boolean {
     return this.type === TileType.Wall;
   }
+
+  neighbours(): Array<Tile | null> {
+    return [
+      this.n(),
+      this.ne(),
+      this.e(),
+      this.se(),
+      this.s(),
+      this.sw(),
+      this.w(),
+      this.nw()
+    ];
+  }
+
+  n() {
+    return this.map.tileAt(this.x, this.y - 1);
+  }
+  s() {
+    return this.map.tileAt(this.x, this.y + 1);
+  }
+  w() {
+    return this.map.tileAt(this.x - 1, this.y);
+  }
+  e() {
+    return this.map.tileAt(this.x + 1, this.y);
+  }
+  nw() {
+    return this.map.tileAt(this.x - 1, this.y - 1);
+  }
+  ne() {
+    return this.map.tileAt(this.x + 1, this.y - 1);
+  }
+  sw() {
+    return this.map.tileAt(this.x - 1, this.y + 1);
+  }
+  se() {
+    return this.map.tileAt(this.x + 1, this.y + 1);
+  }
 }
