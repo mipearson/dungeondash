@@ -1,10 +1,12 @@
-import Tiles from "../assets/Graphics";
+import Graphics from "../assets/Graphics";
+import Tile from "../entities/Tile";
 import Mrpas from "mrpas";
+import Phaser from "phaser";
 
 const radius = 7;
 
-export default class FOV {
-  private layer: Phaser.Tilemaps.DynamicTilemapLayer;
+export default class FOVLayer {
+  public layer: Phaser.Tilemaps.DynamicTilemapLayer;
   private mrpas: any;
   private lastX: number;
   private lastY: number;
@@ -14,17 +16,17 @@ export default class FOV {
   constructor(
     width: number,
     height: number,
-    walls: Array<Array<boolean>>,
+    walls: Array<Array<Tile>>,
     map: Phaser.Tilemaps.Tilemap
   ) {
     const utilTiles = map.addTilesetImage("util");
 
     this.layer = map
       .createBlankDynamicLayer("Dark", utilTiles, 0, 0)
-      .fill(Tiles.util.indices.black);
+      .fill(Graphics.util.indices.black);
 
     this.mrpas = new Mrpas(width, height, (x: number, y: number) => {
-      return walls[y] && !walls[y][x];
+      return walls[y] && !walls[y][x].collides;
     });
 
     this.lastX = -1;

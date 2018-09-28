@@ -1,8 +1,8 @@
 import Phaser from "phaser";
 import Tiles from "../assets/Graphics";
-import FOV from "../entities/FOV";
+import FOVLayer from "../entities/FOVLayer";
 import Player from "../entities/Player";
-import DungeonFactory from "dungeon-factory";
+import { generateDungeon } from "../lib/DungeonGenerator";
 
 const worldTileHeight = 81;
 const worldTileWidth = 81;
@@ -11,7 +11,7 @@ export default class DungeonScene extends Phaser.Scene {
   lastX: number;
   lastY: number;
   player: Player | null;
-  fov: FOV | null;
+  fov: FOVLayer | null;
   map: Phaser.Tilemaps.Tilemap | null;
 
   preload(): void {
@@ -33,14 +33,8 @@ export default class DungeonScene extends Phaser.Scene {
   }
 
   create(): void {
-    const dungeon = DungeonFactory.generate({
-      width: worldTileWidth,
-      height: worldTileHeight
-    }) as { tiles: Array<Array<any>> };
-
-    const walls = dungeon.tiles.map(row =>
-      row.map(tile => tile.type === "wall")
-    );
+    const tiles = generateDungeon(worldTileWidth, worldTileHeight);
+    console.log(tiles);
 
     this.map = this.make.tilemap({
       tileWidth: Tiles.dungeon.width,
@@ -67,13 +61,13 @@ export default class DungeonScene extends Phaser.Scene {
       0
     );
 
-    this.fov = new FOV(worldTileWidth, worldTileHeight, walls, this.map);
+    this.fov = new FOVLayer(worldTileWidth, worldTileHeight, tiles, this.map);
 
     let firstPos = [0, 0];
     for (let x = 0; x < worldTileWidth; x++) {
       for (let y = 0; y < worldTileHeight; y++) {
-        const tile = dungeon.tiles[y][x] as any;
-        if (tile.type === "wall") {
+        const tile = tiles[y][x];
+        if (tile.isWall()) {
           // let idx = 0;
           // if (tile.nesw.east && tile.nesw.east.type !== "wall") {
           //   idx = randomTile(Tiles.World.Wall.Brown.Horizontal);
