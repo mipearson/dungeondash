@@ -73,14 +73,14 @@ export default class Map {
     for (let x = 0; x < width; x++) {
       for (let y = 0; y < height; y++) {
         const tile = this.tiles[y][x];
-        if (tile.isWall()) {
+        if (tile.type === TileType.Wall) {
           // let idx = 0;
           // if (tile.nesw.east && tile.nesw.east.type !== "wall") {
           //   idx = randomTile(Tiles.World.Wall.Brown.Horizontal);
           // } else {
           //   idx = randomTile(Tiles.World.Wall.Brown.Vertical);
           // }
-          this.wallLayer.putTileAt(Tiles.dungeon.indices.block, x, y);
+          this.wallLayer.putTileAt(tile.wallIndex(), x, y);
         }
       }
     }

@@ -1,4 +1,5 @@
 import Map from "./map";
+import Graphics from "../assets/Graphics";
 
 export enum TileType {
   None,
@@ -21,45 +22,34 @@ export default class Tile {
     this.y = y;
   }
 
-  isWall(): boolean {
-    return this.type === TileType.Wall;
+  neighbours(): { [dir: string]: Tile | null } {
+    return {
+      n: this.map.tileAt(this.x, this.y - 1),
+      s: this.map.tileAt(this.x, this.y + 1),
+      w: this.map.tileAt(this.x - 1, this.y),
+      e: this.map.tileAt(this.x + 1, this.y),
+      nw: this.map.tileAt(this.x - 1, this.y - 1),
+      ne: this.map.tileAt(this.x + 1, this.y - 1),
+      sw: this.map.tileAt(this.x - 1, this.y + 1),
+      se: this.map.tileAt(this.x + 1, this.y + 1)
+    };
   }
 
-  neighbours(): Array<Tile | null> {
-    return [
-      this.n(),
-      this.ne(),
-      this.e(),
-      this.se(),
-      this.s(),
-      this.sw(),
-      this.w(),
-      this.nw()
-    ];
-  }
+  wallIndex() {
+    const directions = ["n", "ne", "e", "se", "s", "sw", "w", "nw"];
 
-  n() {
-    return this.map.tileAt(this.x, this.y - 1);
-  }
-  s() {
-    return this.map.tileAt(this.x, this.y + 1);
-  }
-  w() {
-    return this.map.tileAt(this.x - 1, this.y);
-  }
-  e() {
-    return this.map.tileAt(this.x + 1, this.y);
-  }
-  nw() {
-    return this.map.tileAt(this.x - 1, this.y - 1);
-  }
-  ne() {
-    return this.map.tileAt(this.x + 1, this.y - 1);
-  }
-  sw() {
-    return this.map.tileAt(this.x - 1, this.y + 1);
-  }
-  se() {
-    return this.map.tileAt(this.x + 1, this.y + 1);
+    const neighbours = this.neighbours();
+
+    const lookup = directions
+      .filter(
+        dir => !neighbours[dir] || neighbours[dir]!.type === TileType.Wall
+      )
+      .join("_");
+
+    if (!Graphics.dungeon.indices.walls[lookup]) {
+      console.log(`could not find index for ${lookup}`);
+      return Graphics.dungeon.indices.walls.nil;
+    }
+    return Graphics.dungeon.indices.walls[lookup];
   }
 }
