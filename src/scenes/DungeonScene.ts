@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import Tiles from "../assets/Graphics";
 import FOVLayer from "../entities/FOVLayer";
 import Player from "../entities/Player";
-import { generateDungeon } from "../lib/DungeonGenerator";
+import Map from "../entities/Map";
 
 const worldTileHeight = 81;
 const worldTileWidth = 81;
@@ -12,7 +12,7 @@ export default class DungeonScene extends Phaser.Scene {
   lastY: number;
   player: Player | null;
   fov: FOVLayer | null;
-  map: Phaser.Tilemaps.Tilemap | null;
+  tilemap: Phaser.Tilemaps.Tilemap | null;
 
   preload(): void {
     this.load.image("dungeon", Tiles.dungeon.file);
@@ -29,44 +29,43 @@ export default class DungeonScene extends Phaser.Scene {
     this.lastY = -1;
     this.player = null;
     this.fov = null;
-    this.map = null;
+    this.tilemap = null;
   }
 
   create(): void {
-    const tiles = generateDungeon(worldTileWidth, worldTileHeight);
-    console.log(tiles);
+    const map = new Map(worldTileWidth, worldTileHeight);
 
-    this.map = this.make.tilemap({
+    this.tilemap = this.make.tilemap({
       tileWidth: Tiles.dungeon.width,
       tileHeight: Tiles.dungeon.height,
-      width: worldTileWidth,
-      height: worldTileHeight
+      width: map.width,
+      height: map.height
     });
 
-    const dungeonTiles = this.map.addTilesetImage("dungeon");
+    const dungeonTiles = this.tilemap.addTilesetImage("dungeon");
 
-    this.map
+    this.tilemap
       .createBlankDynamicLayer("Ground", dungeonTiles, 0, 0)
       .randomize(
         0,
         0,
-        worldTileWidth,
-        worldTileHeight,
+        map.width,
+        map.height,
         Tiles.dungeon.indices.floor.outer
       );
-    const wallLayer = this.map.createBlankDynamicLayer(
+    const wallLayer = this.tilemap.createBlankDynamicLayer(
       "Wall",
       dungeonTiles,
       0,
       0
     );
 
-    this.fov = new FOVLayer(worldTileWidth, worldTileHeight, tiles, this.map);
+    this.fov = new FOVLayer(map.width, map.height, map.tiles, this.tilemap);
 
     let firstPos = [0, 0];
-    for (let x = 0; x < worldTileWidth; x++) {
-      for (let y = 0; y < worldTileHeight; y++) {
-        const tile = tiles[y][x];
+    for (let x = 0; x < map.width; x++) {
+      for (let y = 0; y < map.height; y++) {
+        const tile = map.tiles[y][x];
         if (tile.isWall()) {
           // let idx = 0;
           // if (tile.nesw.east && tile.nesw.east.type !== "wall") {
@@ -82,8 +81,8 @@ export default class DungeonScene extends Phaser.Scene {
     }
 
     this.player = new Player(
-      this.map.tileToWorldX(firstPos[0]),
-      this.map.tileToWorldX(firstPos[1]),
+      this.tilemap.tileToWorldX(firstPos[0]),
+      this.tilemap.tileToWorldX(firstPos[1]),
       this
     );
 
@@ -92,8 +91,8 @@ export default class DungeonScene extends Phaser.Scene {
     this.cameras.main.setBounds(
       0,
       0,
-      worldTileWidth * Tiles.dungeon.width,
-      worldTileHeight * Tiles.dungeon.height
+      map.width * Tiles.dungeon.width,
+      map.height * Tiles.dungeon.height
     );
     this.cameras.main.startFollow(this.player.sprite);
 
@@ -104,8 +103,8 @@ export default class DungeonScene extends Phaser.Scene {
   update() {
     this.player!.update();
 
-    const playerX = this.map!.worldToTileX(this.player!.sprite.x);
-    const playerY = this.map!.worldToTileY(this.player!.sprite.y);
+    const playerX = this.tilemap!.worldToTileX(this.player!.sprite.x);
+    const playerY = this.tilemap!.worldToTileY(this.player!.sprite.y);
 
     this.fov!.update(playerX, playerY);
   }
