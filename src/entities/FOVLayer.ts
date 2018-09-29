@@ -8,7 +8,7 @@ const fogAlpha = 0.8;
 
 const lightDropoff = [0.7, 0.6, 0.3, 0.1];
 
-const alphaPerMs = 0.002;
+const alphaPerMs = 0.004;
 
 export default class FOVLayer {
   public layer: Phaser.Tilemaps.DynamicTilemapLayer;
@@ -48,13 +48,22 @@ export default class FOVLayer {
         }
         const desiredAlpha = this.map.tiles[y][x].desiredAlpha;
         const tile = this.layer.getTileAt(x, y);
+        const distance = Math.abs(tile.alpha - desiredAlpha);
         if (tile.alpha > desiredAlpha) {
           tile.setAlpha(
-            Phaser.Math.MinSub(tile.alpha, alphaPerMs * delta, desiredAlpha)
+            Phaser.Math.MinSub(
+              tile.alpha,
+              alphaPerMs * delta * distance,
+              desiredAlpha
+            )
           );
         } else if (tile.alpha < desiredAlpha) {
           tile.setAlpha(
-            Phaser.Math.MaxAdd(tile.alpha, alphaPerMs * delta, desiredAlpha)
+            Phaser.Math.MaxAdd(
+              tile.alpha,
+              alphaPerMs * delta * distance,
+              desiredAlpha
+            )
           );
         }
       }
