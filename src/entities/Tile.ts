@@ -35,34 +35,55 @@ export default class Tile {
     };
   }
 
+  // prettier-ignore
   wallIndex() {
     const neighbours = this.neighbours();
 
-    const walls = {
-        n: !neighbours.n || neighbours.n.type === TileType.Wall,
-        s: !neighbours.s || neighbours.s.type === TileType.Wall,
-        w: !neighbours.w || neighbours.w.type === TileType.Wall,
-        e: !neighbours.e || neighbours.e.type === TileType.Wall,
-        nw: !neighbours.nw || neighbours.nw.type === TileType.Wall,
-        ne: !neighbours.ne || neighbours.ne.type === TileType.Wall,
-        sw: !neighbours.sw || neighbours.sw.type === TileType.Wall,
-        se: !neighbours.se || neighbours.se.type === TileType.Wall
-    } 
+    const n = !neighbours.n || neighbours.n.type === TileType.Wall;
+    const s = !neighbours.s || neighbours.s.type === TileType.Wall;
+    const w = !neighbours.w || neighbours.w.type === TileType.Wall;
+    const e = !neighbours.e || neighbours.e.type === TileType.Wall;
+    const nw = !neighbours.nw || neighbours.nw.type === TileType.Wall;
+    const ne = !neighbours.ne || neighbours.ne.type === TileType.Wall;
+    const sw = !neighbours.sw || neighbours.sw.type === TileType.Wall;
+    const se = !neighbours.se || neighbours.se.type === TileType.Wall;
 
     const i = Graphics.dungeon.indices.walls;
+    
+    if (n && ne && e && se && s && sw && w && nw) { return i.enclosed; }
 
-    if 
-    // const lookup = directions
-    //   .filter(
-    //     dir => !neighbours[dir] || neighbours[dir]!.type === TileType.Wall
-    //   )
-    //   .join("_");
+    if (n && ne && e && s && sw && w && nw) { return i.edges.inner.se; }
+    if (n && ne && e && se && s && w && nw) { return i.edges.inner.sw; }
+    if (n && e && se && s && sw && w && nw) { return i.edges.inner.ne; }
+    if (n && ne && e && se && s && sw && w) { return i.edges.inner.nw; }
+    
+    if (e && s && w && (se || sw)) { return i.edges.outer.n; }
+    if (n && s && w && (nw || sw)) { return i.edges.outer.e; }
+    if (n && e && w && (ne || nw)) { return i.edges.outer.s; }
+    if (n && e && s && (ne || se)) { return i.edges.outer.w; }
 
-    // if (!Graphics.dungeon.indices.walls[lookup]) {
-    //   console.log(`could not find index for ${lookup}`);
-    //   return Graphics.dungeon.indices.walls.nil;
-    // }
-    // return Graphics.dungeon.indices.walls[lookup];
+    if (e && se && s) { return i.edges.outer.nw; }
+    if (s && sw && w) { return i.edges.outer.ne; }
+    if (n && w && nw) { return i.edges.outer.se; }
+    if (n && ne && e) { return i.edges.outer.sw; }
+
+    if (n && e && s && w) { return i.intersections.n_e_s_w; }
+    if (n && e && s) { return i.intersections.n_e_s; }
+    if (n && s && w) { return i.intersections.n_s_w; }
+    if (e && s && w) { return i.intersections.e_s_w; }
+    if (n && e && w) { return i.intersections.n_e_w; }
+
+    if (e && s) { return i.intersections.e_s; }
+    if (e && w) { return i.intersections.e_w; }
+    if (s && w) { return i.intersections.s_w; }
+    if (n && s) { return i.intersections.n_s; }
+    if (n && e) { return i.intersections.n_e; }
+    if (n && w) { return i.intersections.n_w; }
+
+    if (n) { return i.intersections.n; }
+    if (s) { return i.intersections.s; }
+    if (e) { return i.intersections.e; }
+    if (w) { return i.intersections.w; }
 
     return i.alone;
   }
