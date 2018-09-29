@@ -13,6 +13,8 @@ export default class Tile {
   public readonly map: Map;
   public readonly x: number;
   public readonly y: number;
+  public seen: boolean;
+  public desiredAlpha: number; // TODO: Move out of this class, specific to FOV
 
   constructor(type: TileType, x: number, y: number, map: Map) {
     this.type = type;
@@ -20,6 +22,8 @@ export default class Tile {
     this.map = map;
     this.x = x;
     this.y = y;
+    this.seen = false;
+    this.desiredAlpha = 1;
   }
 
   neighbours(): { [dir: string]: Tile | null } {

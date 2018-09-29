@@ -66,16 +66,13 @@ export default class DungeonScene extends Phaser.Scene {
       y: this.tilemap!.worldToTileY(this.player!.sprite.y)
     });
 
-    const boundsNW = new Phaser.Math.Vector2({
-      x: this.tilemap!.worldToTileX(camera.x),
-      y: this.tilemap!.worldToTileY(camera.y)
-    });
+    const bounds = new Phaser.Geom.Rectangle(
+      this.tilemap!.worldToTileX(camera.worldView.x),
+      this.tilemap!.worldToTileY(camera.worldView.y),
+      this.tilemap!.worldToTileX(camera.worldView.width),
+      this.tilemap!.worldToTileX(camera.worldView.height)
+    );
 
-    const boundsSE = new Phaser.Math.Vector2({
-      x: this.tilemap!.worldToTileX(camera.x + camera.width),
-      y: this.tilemap!.worldToTileY(camera.y + camera.height)
-    });
-
-    this.fov!.update(player, { nw: boundsNW, se: boundsSE }, delta);
+    this.fov!.update(player, bounds, delta);
   }
 }
