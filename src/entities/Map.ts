@@ -12,7 +12,7 @@ export default class Map {
   public readonly width: number;
   public readonly height: number;
   public readonly tilemap: Phaser.Tilemaps.Tilemap;
-  public readonly wallLayer: Phaser.Tilemaps.DynamicTilemapLayer;
+  public readonly wallLayer: Phaser.Tilemaps.StaticTilemapLayer;
 
   public readonly startingX: number;
   public readonly startingY: number;
@@ -39,6 +39,20 @@ export default class Map {
       }
     }
 
+    const toReset = [];
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const tile = this.tiles[y][x];
+        if (tile.type === TileType.Wall && tile.isEnclosed()) {
+          toReset.push({ y: y, x: x });
+        }
+      }
+    }
+
+    toReset.forEach(d => {
+      this.tiles[d.y][d.x] = new Tile(TileType.None, d.x, d.y, this);
+    });
+
     const roomNumber = Math.floor(Math.random() * dungeon.rooms.length);
 
     const firstRoom = dungeon.rooms[roomNumber];
@@ -54,7 +68,7 @@ export default class Map {
 
     const dungeonTiles = this.tilemap.addTilesetImage("dungeon");
 
-    this.tilemap
+    const groundLayer = this.tilemap
       .createBlankDynamicLayer("Ground", dungeonTiles, 0, 0)
       .randomize(
         0,
@@ -63,7 +77,7 @@ export default class Map {
         this.height,
         Tiles.dungeon.indices.floor.outer
       );
-    this.wallLayer = this.tilemap.createBlankDynamicLayer(
+    const wallLayer = this.tilemap.createBlankDynamicLayer(
       "Wall",
       dungeonTiles,
       0,
@@ -80,11 +94,13 @@ export default class Map {
           // } else {
           //   idx = randomTile(Tiles.World.Wall.Brown.Vertical);
           // }
-          this.wallLayer.putTileAt(tile.wallIndex(), x, y);
+          wallLayer.putTileAt(tile.wallIndex(), x, y);
         }
       }
     }
-    this.wallLayer.setCollisionBetween(0, 256);
+    wallLayer.setCollisionBetween(0, 256);
+    this.tilemap.convertLayerToStatic(groundLayer);
+    this.wallLayer = this.tilemap.convertLayerToStatic(wallLayer);
   }
 
   tileAt(x: number, y: number): Tile | null {

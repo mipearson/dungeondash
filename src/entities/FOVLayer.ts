@@ -4,6 +4,7 @@ import Mrpas from "mrpas";
 import Phaser from "phaser";
 
 const radius = 7;
+const fogAlpha = 0.8;
 
 export default class FOVLayer {
   public layer: Phaser.Tilemaps.DynamicTilemapLayer;
@@ -45,7 +46,7 @@ export default class FOVLayer {
 
     this.layer.forEachTile(
       (t: Phaser.Tilemaps.Tile) => {
-        t.alpha = t.alpha < 1 ? 0.7 : 1;
+        t.alpha = t.alpha < 1 ? 0.8 : 1;
       },
       this,
       0,
@@ -62,7 +63,11 @@ export default class FOVLayer {
         return this.layer.getTileAt(x, y).alpha < 1;
       },
       (x: number, y: number) => {
-        this.layer.getTileAt(x, y).alpha = 0;
+        const distance = new Phaser.Math.Vector2(x, y).distance(
+          new Phaser.Math.Vector2(tileX, tileY)
+        );
+        const alpha = ((distance - radius / 2) / radius) * fogAlpha;
+        this.layer.getTileAt(x, y).alpha = alpha;
       }
     );
   }
