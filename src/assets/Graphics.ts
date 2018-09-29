@@ -3,7 +3,12 @@ import RoguePlayer from "../../assets/RoguePlayer.png";
 import Util from "../../assets/Util.png";
 
 interface Frames {
-  [name: string]: { start: number; end: number };
+  [name: string]: {
+    start: number;
+    end: number;
+    repeat?: boolean;
+    frameRate: number;
+  };
 }
 
 export default class Graphics {
@@ -63,14 +68,14 @@ export default class Graphics {
     height: 32,
     file: RoguePlayer,
     frames: {
-      idle: { start: 0x01, end: 0x07 },
-      walk: { start: 0x08, end: 0x0d },
-      walkBack: { start: 0x10, end: 0x15 },
-      slash: { start: 0x18, end: 0x1c },
-      slashUp: { start: 0x20, end: 0x25 },
-      slashDown: { start: 0x28, end: 0x2d },
-      hit: { start: 0x30, end: 0x34 },
-      death: { start: 0x38, end: 0x3d }
+      idle: { start: 0x01, end: 0x07, frameRate: 4 },
+      walk: { start: 0x08, end: 0x0d, frameRate: 8 },
+      walkBack: { start: 0x10, end: 0x15, frameRate: 8 },
+      slash: { start: 0x18, end: 0x1c, frameRate: 16, repeat: false },
+      slashUp: { start: 0x20, end: 0x25, frameRate: 16, repeat: false },
+      slashDown: { start: 0x28, end: 0x2d, frameRate: 16, repeat: false },
+      hit: { start: 0x30, end: 0x34, frameRate: 24, repeat: false },
+      death: { start: 0x38, end: 0x3d, frameRate: 24, repeat: false }
     } as Frames
   };
 

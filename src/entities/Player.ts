@@ -2,10 +2,15 @@ import Phaser from "phaser";
 import Graphics from "../assets/Graphics";
 
 const speed = 150;
+const attackSpeed = speed * 3;
+const attackDuration = 150;
 
 export default class Player {
   public sprite: Phaser.Physics.Arcade.Sprite;
   private keys: Phaser.Input.Keyboard.CursorKeys;
+
+  private attackUntil: number;
+  private attackLockedUntil: number;
 
   constructor(x: number, y: number, scene: Phaser.Scene) {
     for (let animName in Graphics.player.frames) {
@@ -15,8 +20,8 @@ export default class Player {
           "player",
           Graphics.player.frames[animName]
         ),
-        frameRate: 8,
-        repeat: -1
+        frameRate: Graphics.player.frames[animName].frameRate,
+        repeat: Graphics.player.frames[animName].repeat ? -1 : 0
       });
     }
 
@@ -26,12 +31,20 @@ export default class Player {
     this.sprite.anims.play("player-idle");
 
     this.keys = scene.input.keyboard.createCursorKeys();
+
+    this.attackUntil = 0;
+    this.attackLockedUntil = 0;
   }
 
-  update() {
+  update(time: number) {
     const keys = this.keys;
     const body = <Phaser.Physics.Arcade.Body>this.sprite.body;
+    let attackAnim = "";
+    let moveAnim = "";
 
+    if (time < this.attackUntil) {
+      return;
+    }
     // Stop any previous movement from the last frame
     body.setVelocity(0);
 
@@ -51,14 +64,33 @@ export default class Player {
       body.setVelocityY(speed);
     }
 
-    if (keys.left!.isDown || keys.right!.isDown || keys.down!.isDown) {
-      this.sprite.anims.play("player-walk", true);
+    if (keys.left!.isDown || keys.right!.isDown) {
+      moveAnim = "player-walk";
+      attackAnim = "player-slash";
+    } else if (keys.down!.isDown) {
+      moveAnim = "player-walk";
+      attackAnim = "player-slashDown";
     } else if (keys.up!.isDown) {
-      this.sprite.anims.play("player-walkBack", true);
+      moveAnim = "player-walkBack";
+      attackAnim = "player-slashUp";
     } else {
-      this.sprite.anims.play("player-idle", true);
+      moveAnim = "player-idle";
     }
-    // Normalize and scale the velocity so that sprite can't move faster along a diagonal
-    body.velocity.normalize().scale(speed);
+
+    if (keys.space!.isDown && time > this.attackLockedUntil) {
+      this.attackUntil = time + attackDuration;
+      this.attackLockedUntil = time + attackDuration * 2;
+      body.velocity.normalize().scale(attackSpeed);
+      this.sprite.anims.play(attackAnim, true);
+      // this.sprite.setAlpha(0.7);
+      this.sprite.setTint(0xffff88);
+    } else {
+      this.sprite.clearTint();
+      // this.sprite.setAlpha(1);
+      this.sprite.anims.play(moveAnim, true);
+      body.velocity
+        .normalize()
+        .scale(time > this.attackLockedUntil ? speed : speed / 2);
+    }
   }
 }

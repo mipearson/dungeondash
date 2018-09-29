@@ -57,8 +57,8 @@ export default class DungeonScene extends Phaser.Scene {
     this.physics.add.collider(this.player.sprite, map.wallLayer);
   }
 
-  update() {
-    this.player!.update();
+  update(time: number, delta: number) {
+    this.player!.update(time);
 
     const playerX = this.tilemap!.worldToTileX(this.player!.sprite.x);
     const playerY = this.tilemap!.worldToTileY(this.player!.sprite.y);
