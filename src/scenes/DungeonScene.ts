@@ -36,7 +36,7 @@ export default class DungeonScene extends Phaser.Scene {
     const map = new Map(worldTileWidth, worldTileHeight, this);
     this.tilemap = map.tilemap;
 
-    this.fov = new FOVLayer(map.width, map.height, map.tiles, this.tilemap);
+    this.fov = new FOVLayer(map);
 
     this.player = new Player(
       this.tilemap.tileToWorldX(map.startingX),
@@ -59,10 +59,23 @@ export default class DungeonScene extends Phaser.Scene {
 
   update(time: number, delta: number) {
     this.player!.update(time);
+    const camera = this.cameras.main;
 
-    const playerX = this.tilemap!.worldToTileX(this.player!.sprite.x);
-    const playerY = this.tilemap!.worldToTileY(this.player!.sprite.y);
+    const player = new Phaser.Math.Vector2({
+      x: this.tilemap!.worldToTileX(this.player!.sprite.x),
+      y: this.tilemap!.worldToTileY(this.player!.sprite.y)
+    });
 
-    this.fov!.update(playerX, playerY);
+    const boundsNW = new Phaser.Math.Vector2({
+      x: this.tilemap!.worldToTileX(camera.x),
+      y: this.tilemap!.worldToTileY(camera.y)
+    });
+
+    const boundsSE = new Phaser.Math.Vector2({
+      x: this.tilemap!.worldToTileX(camera.x + camera.width),
+      y: this.tilemap!.worldToTileY(camera.y + camera.height)
+    });
+
+    this.fov!.update(player, { nw: boundsNW, se: boundsSE }, delta);
   }
 }

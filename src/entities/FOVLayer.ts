@@ -1,5 +1,5 @@
 import Graphics from "../assets/Graphics";
-import Tile from "../entities/Tile";
+import Map from "../entities/Map";
 import Mrpas from "mrpas";
 import Phaser from "phaser";
 
@@ -11,40 +11,33 @@ const lightDropoff = [0.7, 0.6, 0.3, 0.1];
 export default class FOVLayer {
   public layer: Phaser.Tilemaps.DynamicTilemapLayer;
   private mrpas: any;
-  private lastX: number;
-  private lastY: number;
-  private width: number;
-  private height: number;
+  private lastPos: Phaser.Math.Vector2;
+  private map: Map;
 
-  constructor(
-    width: number,
-    height: number,
-    walls: Array<Array<Tile>>,
-    map: Phaser.Tilemaps.Tilemap
-  ) {
-    const utilTiles = map.addTilesetImage("util");
+  constructor(map: Map) {
+    const utilTiles = map.tilemap.addTilesetImage("util");
 
-    this.layer = map
+    this.layer = map.tilemap
       .createBlankDynamicLayer("Dark", utilTiles, 0, 0)
       .fill(Graphics.util.indices.black);
 
-    this.mrpas = new Mrpas(width, height, (x: number, y: number) => {
-      return walls[y] && !walls[y][x].collides;
+    this.mrpas = new Mrpas(map.width, map.height, (x: number, y: number) => {
+      return map.tiles[y] && !map.tiles[y][x].collides;
     });
 
-    this.lastX = -1;
-    this.lastY = -1;
-
-    this.width = width;
-    this.height = height;
+    this.lastPos = new Phaser.Math.Vector2({ x: -1, y: -1 });
+    this.map = map;
   }
 
-  update(tileX: number, tileY: number) {
-    if (this.lastX == tileX && this.lastY == tileY) {
+  update(
+    pos: Phaser.Math.Vector2,
+    bounds: { nw: Phaser.Math.Vector2; se: Phaser.Math.Vector2 },
+    delta: number
+  ) {
+    if (this.lastPos.equals(pos)) {
       return;
     }
-    this.lastX = tileX;
-    this.lastY = tileY;
+    this.lastPos = pos.clone();
 
     this.layer.forEachTile(
       (t: Phaser.Tilemaps.Tile) => {
@@ -53,13 +46,13 @@ export default class FOVLayer {
       this,
       0,
       0,
-      this.width,
-      this.height
+      this.map.width,
+      this.map.height
     );
 
     this.mrpas.compute(
-      tileX,
-      tileY,
+      pos.x,
+      pos.y,
       radius,
       (x: number, y: number) => {
         return this.layer.getTileAt(x, y).alpha < 1;
@@ -67,7 +60,7 @@ export default class FOVLayer {
       (x: number, y: number) => {
         const distance = Math.floor(
           new Phaser.Math.Vector2(x, y).distance(
-            new Phaser.Math.Vector2(tileX, tileY)
+            new Phaser.Math.Vector2(pos.x, pos.y)
           )
         );
 
