@@ -1,7 +1,8 @@
 import Phaser from "phaser";
 import Graphics from "../assets/Graphics";
 
-const tileset = Graphics.dungeon;
+// const tileset = Graphics.dungeon;
+const tileset = Graphics.player;
 
 export default class ReferenceScene extends Phaser.Scene {
   preload(): void {

@@ -8,18 +8,22 @@ export default class Player {
   private keys: Phaser.Input.Keyboard.CursorKeys;
 
   constructor(x: number, y: number, scene: Phaser.Scene) {
-    scene.anims.create({
-      key: "player-walk",
-      frames: scene.anims.generateFrameNumbers("player", {
-        frames: Graphics.player.indices.south
-      }),
-      frameRate: 8,
-      repeat: -1
-    });
+    for (let animName in Graphics.player.frames) {
+      scene.anims.create({
+        key: `player-${animName}`,
+        frames: scene.anims.generateFrameNumbers(
+          "player",
+          Graphics.player.frames[animName]
+        ),
+        frameRate: 8,
+        repeat: -1
+      });
+    }
 
     this.sprite = scene.physics.add.sprite(x, y, "player", 0);
     this.sprite.setSize(13, 12);
     this.sprite.setOffset(9, 16);
+    this.sprite.anims.play("player-idle");
 
     this.keys = scene.input.keyboard.createCursorKeys();
   }
@@ -34,8 +38,10 @@ export default class Player {
     // Horizontal movement
     if (keys.left!.isDown) {
       body.setVelocityX(-speed);
+      this.sprite.setFlipX(true);
     } else if (keys.right!.isDown) {
       body.setVelocityX(speed);
+      this.sprite.setFlipX(false);
     }
 
     // Vertical movement
@@ -45,6 +51,13 @@ export default class Player {
       body.setVelocityY(speed);
     }
 
+    if (keys.left!.isDown || keys.right!.isDown || keys.down!.isDown) {
+      this.sprite.anims.play("player-walk", true);
+    } else if (keys.up!.isDown) {
+      this.sprite.anims.play("player-walkBack", true);
+    } else {
+      this.sprite.anims.play("player-idle", true);
+    }
     // Normalize and scale the velocity so that sprite can't move faster along a diagonal
     body.velocity.normalize().scale(speed);
   }

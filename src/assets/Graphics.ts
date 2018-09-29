@@ -2,11 +2,8 @@ import RogueDungeon from "../../assets/RogueDungeon.png";
 import RoguePlayer from "../../assets/RoguePlayer.png";
 import Util from "../../assets/Util.png";
 
-interface Tileset {
-  width: number;
-  height: number;
-  file: string;
-  indices: any;
+interface Frames {
+  [name: string]: { start: number; end: number };
 }
 
 export default class Graphics {
@@ -65,12 +62,19 @@ export default class Graphics {
     width: 32,
     height: 32,
     file: RoguePlayer,
-    indices: {
-      south: [0x01, 0x02, 0x03, 0x04]
-    }
+    frames: {
+      idle: { start: 0x01, end: 0x07 },
+      walk: { start: 0x08, end: 0x0d },
+      walkBack: { start: 0x10, end: 0x15 },
+      slash: { start: 0x18, end: 0x1c },
+      slashUp: { start: 0x20, end: 0x25 },
+      slashDown: { start: 0x28, end: 0x2d },
+      hit: { start: 0x30, end: 0x34 },
+      death: { start: 0x38, end: 0x3d }
+    } as Frames
   };
 
-  static readonly util: Tileset = {
+  static readonly util = {
     width: 16,
     height: 16,
     file: Util,
