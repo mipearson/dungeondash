@@ -4,8 +4,9 @@ import Util from "../../assets/Util.png";
 
 interface Frames {
   [name: string]: {
-    start: number;
-    end: number;
+    start?: number;
+    end?: number;
+    frames?: Array<number>;
     repeat?: boolean;
     frameRate: number;
   };
@@ -68,10 +69,14 @@ export default class Graphics {
     height: 32,
     file: RoguePlayer,
     frames: {
-      idle: { start: 0x01, end: 0x07, frameRate: 4 },
-      walk: { start: 0x08, end: 0x0d, frameRate: 8 },
-      walkBack: { start: 0x10, end: 0x15, frameRate: 8 },
-      slash: { start: 0x18, end: 0x1c, frameRate: 16, repeat: false },
+      idle: { start: 0x01, end: 0x07, frameRate: 6 },
+      walk: { start: 0x08, end: 0x0d, frameRate: 10 },
+      walkBack: { start: 0x10, end: 0x15, frameRate: 10 },
+      slash: {
+        frames: [0x18, 0x19, 0x19, 0x19, 0x1a, 0x1b, 0x1c],
+        frameRate: 30,
+        repeat: false
+      },
       slashUp: { start: 0x20, end: 0x25, frameRate: 16, repeat: false },
       slashDown: { start: 0x28, end: 0x2d, frameRate: 16, repeat: false },
       hit: { start: 0x30, end: 0x34, frameRate: 24, repeat: false },
