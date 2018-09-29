@@ -6,6 +6,8 @@ import Phaser from "phaser";
 const radius = 7;
 const fogAlpha = 0.8;
 
+const lightDropoff = [0.7, 0.6, 0.3, 0.1];
+
 export default class FOVLayer {
   public layer: Phaser.Tilemaps.DynamicTilemapLayer;
   private mrpas: any;
@@ -46,7 +48,7 @@ export default class FOVLayer {
 
     this.layer.forEachTile(
       (t: Phaser.Tilemaps.Tile) => {
-        t.alpha = t.alpha < 1 ? 0.8 : 1;
+        t.alpha = t.alpha < 1 ? fogAlpha : 1;
       },
       this,
       0,
@@ -63,10 +65,15 @@ export default class FOVLayer {
         return this.layer.getTileAt(x, y).alpha < 1;
       },
       (x: number, y: number) => {
-        const distance = new Phaser.Math.Vector2(x, y).distance(
-          new Phaser.Math.Vector2(tileX, tileY)
+        const distance = Math.floor(
+          new Phaser.Math.Vector2(x, y).distance(
+            new Phaser.Math.Vector2(tileX, tileY)
+          )
         );
-        const alpha = ((distance - radius / 2) / radius) * fogAlpha;
+
+        const rolloffIdx = distance <= radius ? radius - distance : 0;
+        const alpha =
+          rolloffIdx < lightDropoff.length ? lightDropoff[rolloffIdx] : 0;
         this.layer.getTileAt(x, y).alpha = alpha;
       }
     );
