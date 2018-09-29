@@ -26,8 +26,8 @@ export default class Player {
     }
 
     this.sprite = scene.physics.add.sprite(x, y, "player", 0);
-    this.sprite.setSize(13, 12);
-    this.sprite.setOffset(9, 16);
+    this.sprite.setSize(8, 8);
+    this.sprite.setOffset(12, 20);
     this.sprite.anims.play("player-idle");
 
     this.keys = scene.input.keyboard.createCursorKeys();
