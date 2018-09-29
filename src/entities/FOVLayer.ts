@@ -43,7 +43,7 @@ export default class FOVLayer {
 
     for (let y = bounds.y; y < bounds.y + bounds.height; y++) {
       for (let x = bounds.x; x < bounds.x + bounds.width; x++) {
-        if (y < 0 || y > this.map.height || x < 0 || x > this.map.width) {
+        if (y < 0 || y >= this.map.height || x < 0 || x >= this.map.width) {
           continue;
         }
         const desiredAlpha = this.map.tiles[y][x].desiredAlpha;
