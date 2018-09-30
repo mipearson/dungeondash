@@ -2,7 +2,7 @@ import Phaser from "phaser";
 
 export default class InfoScene extends Phaser.Scene {
   constructor() {
-    super({ key: "InfoScene", active: true });
+    super({ key: "InfoScene" });
   }
 
   create(): void {

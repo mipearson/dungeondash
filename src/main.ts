@@ -10,8 +10,7 @@ const game = new Phaser.Game({
   height: window.innerHeight,
   render: { pixelArt: true },
   physics: { default: "arcade", arcade: { debug: false, gravity: { y: 0 } } },
-  scene: [DungeonScene, InfoScene]
-  // scene: [ReferenceScene]
+  scene: [DungeonScene, InfoScene, ReferenceScene]
 });
 
 function setUpHotReload() {

@@ -15,6 +15,9 @@ export default class Player {
 
   constructor(x: number, y: number, scene: Phaser.Scene) {
     for (let animName in Graphics.player.frames) {
+      if (scene.anims.get(`player-${animName}`)) {
+        continue;
+      }
       scene.anims.create({
         key: `player-${animName}`,
         frames: scene.anims.generateFrameNumbers(

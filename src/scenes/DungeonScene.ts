@@ -25,7 +25,7 @@ export default class DungeonScene extends Phaser.Scene {
   }
 
   constructor() {
-    super("Scene");
+    super("DungeonScene");
     this.lastX = -1;
     this.lastY = -1;
     this.player = null;
@@ -60,6 +60,12 @@ export default class DungeonScene extends Phaser.Scene {
     window.addEventListener("resize", () => {
       this.cameraResizeNeeded = true;
     });
+
+    this.input.keyboard.on("keydown_R", () => {
+      this.scene.start("ReferenceScene");
+    });
+
+    this.scene.run("InfoScene");
   }
 
   update(time: number, delta: number) {

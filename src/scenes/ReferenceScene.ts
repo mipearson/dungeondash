@@ -45,6 +45,11 @@ export default class ReferenceScene extends Phaser.Scene {
       this.reset();
       this.previewTileset();
     });
+
+    this.input.keyboard.on("keydown_R", () => {
+      console.log("starting dungeon");
+      this.scene.start("DungeonScene");
+    });
   }
 
   reset() {
