@@ -8,7 +8,26 @@ const fogAlpha = 0.8;
 
 const lightDropoff = [0.7, 0.6, 0.3, 0.1];
 
+// Alpha to transition per MS given maximum distance between desired
+// and actual alpha
 const alphaPerMs = 0.004;
+
+function updateTileAlpha(
+  desiredAlpha: number,
+  delta: number,
+  tile: Phaser.Tilemaps.Tile
+) {
+  // Update faster the further away we are from the desired value,
+  // but restrict the lower bound so we don't get it slowing
+  // down infinitley.
+  const distance = Math.max(Math.abs(tile.alpha - desiredAlpha), 0.05);
+  const updateFactor = alphaPerMs * delta * distance;
+  if (tile.alpha > desiredAlpha) {
+    tile.setAlpha(Phaser.Math.MinSub(tile.alpha, updateFactor, desiredAlpha));
+  } else if (tile.alpha < desiredAlpha) {
+    tile.setAlpha(Phaser.Math.MaxAdd(tile.alpha, updateFactor, desiredAlpha));
+  }
+}
 
 export default class FOVLayer {
   public layer: Phaser.Tilemaps.DynamicTilemapLayer;
@@ -48,24 +67,7 @@ export default class FOVLayer {
         }
         const desiredAlpha = this.map.tiles[y][x].desiredAlpha;
         const tile = this.layer.getTileAt(x, y);
-        const distance = Math.abs(tile.alpha - desiredAlpha);
-        if (tile.alpha > desiredAlpha) {
-          tile.setAlpha(
-            Phaser.Math.MinSub(
-              tile.alpha,
-              alphaPerMs * delta * distance,
-              desiredAlpha
-            )
-          );
-        } else if (tile.alpha < desiredAlpha) {
-          tile.setAlpha(
-            Phaser.Math.MaxAdd(
-              tile.alpha,
-              alphaPerMs * delta * distance,
-              desiredAlpha
-            )
-          );
-        }
+        updateTileAlpha(desiredAlpha, delta, tile);
       }
     }
   }
