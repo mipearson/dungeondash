@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "run": "parcel index.html",
+    "start": "parcel index.html",
     "lint": "tsc --noEmit",
     "ship": "rm -rf dist && parcel build index.html && surge --domain https://dungeon-dash.surge.sh dist"
   },

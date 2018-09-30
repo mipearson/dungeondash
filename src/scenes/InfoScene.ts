@@ -7,10 +7,13 @@ export default class InfoScene extends Phaser.Scene {
 
   create(): void {
     const content = [
-      "Phaser 3 tilemap & FOV experiment.",
+      "Dungeon Dash!",
       "",
       "Use arrow keys to walk around the map!",
-      "Press space while moving to dash-attack!"
+      "Press space while moving to dash-attack!",
+      "",
+      "Credits & more information at",
+      "https://github.com/mipearson/dungeondash"
     ];
     const text = this.add.text(25, 25, content, {
       fontFamily: "sans-serif",

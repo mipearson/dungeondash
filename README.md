@@ -1,6 +1,6 @@
 # Dungeon Dash!
 
-An experiment with making a dungeon crawler using Open Source & public domain assets.
+An experiment with making a dungeon crawler with Open Source or public domain assets, using Phaser 3 & Typescript.
 
 Live demo available at https://dungeon-dash.surge.sh
 
