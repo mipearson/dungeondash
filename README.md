@@ -6,10 +6,23 @@ Live demo available at https://dungeon-dash.surge.sh
 
 MIT License applies unless otherwise noted.
 
+## Contributing
+
+Get a local instance running with `npm i` and then `npm run start`.
+
+Contributions must be valid typescript & formatted with prettier.js.
+
+Otherwise, go nuts.
+
 ## TODO
 
- * resize Phaser & camera when window resizes
  * tune dash animation
+ * rotate between reference & game scenes
+ * rotate between tilesets in reference scene
+ * debug key
+ * proper typings for mrpas
+ * proper typings for dungeon-factory
+ * use correct phaser version of phaser.d.ts
 
 ## Credits
 

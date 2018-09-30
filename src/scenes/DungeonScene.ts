@@ -13,6 +13,7 @@ export default class DungeonScene extends Phaser.Scene {
   player: Player | null;
   fov: FOVLayer | null;
   tilemap: Phaser.Tilemaps.Tilemap | null;
+  cameraResizeNeeded: boolean;
 
   preload(): void {
     this.load.image("dungeon", Tiles.dungeon.file);
@@ -30,6 +31,7 @@ export default class DungeonScene extends Phaser.Scene {
     this.player = null;
     this.fov = null;
     this.tilemap = null;
+    this.cameraResizeNeeded = false;
   }
 
   create(): void {
@@ -55,11 +57,21 @@ export default class DungeonScene extends Phaser.Scene {
     this.cameras.main.startFollow(this.player.sprite);
 
     this.physics.add.collider(this.player.sprite, map.wallLayer);
+    window.addEventListener("resize", () => {
+      this.cameraResizeNeeded = true;
+    });
   }
 
   update(time: number, delta: number) {
     this.player!.update(time);
     const camera = this.cameras.main;
+
+    if (this.cameraResizeNeeded) {
+      // Do this here rather than the resize callback as it limits
+      // how much we'll slow down the game
+      camera.setSize(window.innerWidth, window.innerHeight);
+      this.cameraResizeNeeded = false;
+    }
 
     const player = new Phaser.Math.Vector2({
       x: this.tilemap!.worldToTileX(this.player!.sprite.x),

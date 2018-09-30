@@ -3,7 +3,7 @@ import Phaser from "phaser";
 import DungeonScene from "./scenes/DungeonScene";
 import InfoScene from "./scenes/InfoScene";
 
-new Phaser.Game({
+const game = new Phaser.Game({
   type: Phaser.WEBGL,
   // TODO: OnResize
   width: window.innerWidth,
@@ -27,3 +27,7 @@ function setUpHotReload() {
 }
 
 setUpHotReload();
+
+window.addEventListener("resize", () => {
+  game.resize(window.innerWidth, window.innerHeight);
+});
