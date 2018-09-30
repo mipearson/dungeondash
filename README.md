@@ -21,7 +21,6 @@ Otherwise, go nuts.
  * debug key
  * proper typings for mrpas
  * proper typings for dungeon-factory
- * use correct phaser version of phaser.d.ts
  * extrude tilesets to avoid webgl issues
 
 ## Credits
