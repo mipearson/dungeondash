@@ -81,8 +81,8 @@ export default class DungeonScene extends Phaser.Scene {
     }
 
     const player = new Phaser.Math.Vector2({
-      x: this.tilemap!.worldToTileX(this.player!.sprite.x),
-      y: this.tilemap!.worldToTileY(this.player!.sprite.y)
+      x: this.tilemap!.worldToTileX(this.player!.sprite.body.x),
+      y: this.tilemap!.worldToTileY(this.player!.sprite.body.y)
     });
 
     const bounds = new Phaser.Geom.Rectangle(
