@@ -72,13 +72,23 @@ export default class Graphics {
       idle: { start: 0x01, end: 0x07, frameRate: 6 },
       walk: { start: 0x08, end: 0x0d, frameRate: 10 },
       walkBack: { start: 0x10, end: 0x15, frameRate: 10 },
+      // Ideally attacks should be five frames at 30fps to
+      // align with the attack duration of 165ms
       slash: {
-        frames: [0x18, 0x19, 0x19, 0x19, 0x1a, 0x1b, 0x1c],
+        frames: [0x18, 0x19, 0x19, 0x1a, 0x1b],
         frameRate: 30,
         repeat: false
       },
-      slashUp: { start: 0x20, end: 0x25, frameRate: 16, repeat: false },
-      slashDown: { start: 0x28, end: 0x2d, frameRate: 16, repeat: false },
+      slashUp: {
+        frames: [0x21, 0x22, 0x22, 0x23, 0x24],
+        frameRate: 30,
+        repeat: false
+      },
+      slashDown: {
+        frames: [0x29, 0x2a, 0x2a, 0x2b, 0x2c],
+        frameRate: 30,
+        repeat: false
+      },
       hit: { start: 0x30, end: 0x34, frameRate: 24, repeat: false },
       death: { start: 0x38, end: 0x3d, frameRate: 24, repeat: false }
     } as Frames

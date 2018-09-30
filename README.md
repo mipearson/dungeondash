@@ -16,7 +16,6 @@ Otherwise, go nuts.
 
 ## TODO
 
- * tune dash animation
  * rotate between reference & game scenes
  * rotate between tilesets in reference scene
  * debug key

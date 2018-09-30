@@ -3,7 +3,8 @@ import Graphics from "../assets/Graphics";
 
 const speed = 150;
 const attackSpeed = speed * 3;
-const attackDuration = 150;
+const attackDuration = 165;
+const attackCooldown = attackDuration * 2;
 
 export default class Player {
   public sprite: Phaser.Physics.Arcade.Sprite;
@@ -79,7 +80,7 @@ export default class Player {
 
     if (keys.space!.isDown && time > this.attackLockedUntil) {
       this.attackUntil = time + attackDuration;
-      this.attackLockedUntil = time + attackDuration * 2;
+      this.attackLockedUntil = time + attackDuration + attackCooldown;
       body.velocity.normalize().scale(attackSpeed);
       this.sprite.anims.play(attackAnim, true);
       // this.sprite.setAlpha(0.7);
