@@ -17,7 +17,6 @@ Otherwise, go nuts.
 ## TODO
 
  * rotate between reference & game scenes
- * shaded background for preview to show transparency
  * debug key
  * proper typings for mrpas
  * proper typings for dungeon-factory

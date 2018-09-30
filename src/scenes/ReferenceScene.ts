@@ -7,12 +7,14 @@ export default class ReferenceScene extends Phaser.Scene {
   index: number;
   group: Phaser.GameObjects.Group | null;
   map: Phaser.Tilemaps.Tilemap | null;
+  title: Phaser.GameObjects.Text | null;
 
   constructor() {
     super("ReferenceScene");
     this.index = 0;
     this.group = null;
     this.map = null;
+    this.title = null;
   }
 
   preload(): void {
@@ -20,6 +22,20 @@ export default class ReferenceScene extends Phaser.Scene {
   }
 
   create(): void {
+    this.add
+      .grid(
+        window.innerWidth / 2,
+        window.innerHeight / 2,
+        2048,
+        2048,
+        10,
+        10,
+        0x222222
+      )
+      .setAltFillStyle(0x333333)
+      .setOutlineStyle();
+
+    this.title = this.add.text(20, 10, "", { fontSize: 14 });
     this.previewTileset();
     this.input.keyboard.on("keydown_N", () => {
       this.index += 1;
@@ -47,14 +63,22 @@ export default class ReferenceScene extends Phaser.Scene {
       tileHeight: tileset.height
     });
     const tiles = this.map.addTilesetImage(tileset.name);
-    const layer = this.map.createBlankDynamicLayer("preview", tiles, 0, 0);
+    const layer = this.map.createBlankDynamicLayer(
+      "preview",
+      tiles,
+      20,
+      40,
+      tiles.columns,
+      tiles.rows
+    );
+    layer.setScale(3);
 
     for (let y = 0; y < tiles.rows; y++) {
       for (let x = 0; x < tiles.columns; x++) {
         const idx = y * tiles.columns + x;
         const text = this.add.text(
-          x * tileset.width * 2,
-          y * tileset.height * 2,
+          this.map.tileToWorldX(x),
+          this.map.tileToWorldY(y),
           idx.toString(16),
           {
             fontSize: 14
@@ -66,7 +90,12 @@ export default class ReferenceScene extends Phaser.Scene {
       }
     }
 
-    layer.setScale(2);
     this.group.add(layer);
+
+    this.title!.setText(
+      `'${tileset.name}' (${this.index + 1} of ${
+        tilesets.length
+      }) ['n' for next]`
+    );
   }
 }
