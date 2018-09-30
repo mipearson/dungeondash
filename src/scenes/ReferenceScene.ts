@@ -22,19 +22,6 @@ export default class ReferenceScene extends Phaser.Scene {
   }
 
   create(): void {
-    this.add
-      .grid(
-        window.innerWidth / 2,
-        window.innerHeight / 2,
-        2048,
-        2048,
-        10,
-        10,
-        0x222222
-      )
-      .setAltFillStyle(0x333333)
-      .setOutlineStyle();
-
     this.title = this.add.text(20, 10, "", { fontSize: 14 });
     this.previewTileset();
     this.input.keyboard.on("keydown_N", () => {
@@ -71,12 +58,27 @@ export default class ReferenceScene extends Phaser.Scene {
     const layer = this.map.createBlankDynamicLayer(
       "preview",
       tiles,
-      20,
+      30,
       40,
       tiles.columns,
       tiles.rows
     );
     layer.setScale(3);
+
+    const grid = this.add
+      .grid(
+        layer.x + layer.displayWidth / 2,
+        layer.y + layer.displayHeight / 2,
+        layer.displayWidth + 16,
+        layer.displayHeight + 16,
+        8,
+        8,
+        0x222222
+      )
+      .setAltFillStyle(0x333333)
+      .setOutlineStyle();
+    layer.setDepth(5);
+    this.group.add(grid);
 
     for (let y = 0; y < tiles.rows; y++) {
       for (let x = 0; x < tiles.columns; x++) {
