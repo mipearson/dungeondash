@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import Tiles from "../assets/Graphics";
+import Graphics from "../assets/Graphics";
 import FOVLayer from "../entities/FOVLayer";
 import Player from "../entities/Player";
 import Map from "../entities/Map";
@@ -16,11 +16,11 @@ export default class DungeonScene extends Phaser.Scene {
   cameraResizeNeeded: boolean;
 
   preload(): void {
-    this.load.image("dungeon", Tiles.dungeon.file);
-    this.load.image("util", Tiles.util.file);
-    this.load.spritesheet("player", Tiles.player.file, {
-      frameHeight: Tiles.player.height,
-      frameWidth: Tiles.player.width
+    this.load.image(Graphics.dungeon.name, Graphics.dungeon.file);
+    this.load.image(Graphics.util.name, Graphics.util.file);
+    this.load.spritesheet(Graphics.player.name, Graphics.player.file, {
+      frameHeight: Graphics.player.height,
+      frameWidth: Graphics.player.width
     });
   }
 
@@ -51,8 +51,8 @@ export default class DungeonScene extends Phaser.Scene {
     this.cameras.main.setBounds(
       0,
       0,
-      map.width * Tiles.dungeon.width,
-      map.height * Tiles.dungeon.height
+      map.width * Graphics.dungeon.width,
+      map.height * Graphics.dungeon.height
     );
     this.cameras.main.startFollow(this.player.sprite);
 

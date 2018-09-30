@@ -1,6 +1,6 @@
 import Tile, { TileType } from "../entities/Tile";
 import DungeonFactory from "dungeon-factory";
-import Tiles from "../assets/Graphics";
+import Graphics from "../assets/Graphics";
 
 interface DungeonFactoryOutput {
   tiles: Array<Array<{ type: string }>>;
@@ -60,13 +60,13 @@ export default class Map {
     this.startingY = Math.floor(firstRoom.y + firstRoom.height / 2);
 
     this.tilemap = scene.make.tilemap({
-      tileWidth: Tiles.dungeon.width,
-      tileHeight: Tiles.dungeon.height,
+      tileWidth: Graphics.dungeon.width,
+      tileHeight: Graphics.dungeon.height,
       width: width,
       height: height
     });
 
-    const dungeonTiles = this.tilemap.addTilesetImage("dungeon");
+    const dungeonTiles = this.tilemap.addTilesetImage(Graphics.dungeon.name);
 
     const groundLayer = this.tilemap
       .createBlankDynamicLayer("Ground", dungeonTiles, 0, 0)
@@ -75,7 +75,7 @@ export default class Map {
         0,
         this.width,
         this.height,
-        Tiles.dungeon.indices.floor.outer
+        Graphics.dungeon.indices.floor.outer
       );
     const wallLayer = this.tilemap.createBlankDynamicLayer(
       "Wall",

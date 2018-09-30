@@ -14,6 +14,7 @@ interface Frames {
 
 export default class Graphics {
   static readonly dungeon = {
+    name: "dungeon",
     width: 16,
     height: 16,
     file: RogueDungeon,
@@ -65,6 +66,7 @@ export default class Graphics {
   };
 
   static readonly player = {
+    name: "player",
     width: 32,
     height: 32,
     file: RoguePlayer,
@@ -95,6 +97,7 @@ export default class Graphics {
   };
 
   static readonly util = {
+    name: "util",
     width: 16,
     height: 16,
     file: Util,

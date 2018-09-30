@@ -18,7 +18,7 @@ export default class Player {
       scene.anims.create({
         key: `player-${animName}`,
         frames: scene.anims.generateFrameNumbers(
-          "player",
+          Graphics.player.name,
           Graphics.player.frames[animName]
         ),
         frameRate: Graphics.player.frames[animName].frameRate,
@@ -26,7 +26,7 @@ export default class Player {
       });
     }
 
-    this.sprite = scene.physics.add.sprite(x, y, "player", 0);
+    this.sprite = scene.physics.add.sprite(x, y, Graphics.player.name, 0);
     this.sprite.setSize(8, 8);
     this.sprite.setOffset(12, 20);
     this.sprite.anims.play("player-idle");
