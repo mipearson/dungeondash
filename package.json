@@ -6,7 +6,7 @@
   "scripts": {
     "start": "parcel index.html",
     "lint": "tsc --noEmit",
-    "ship": "rm -rf dist && parcel build index.html && surge --domain https://dungeon-dash.surge.sh dist"
+    "ship": "rm -rf dist && parcel build index.html && surge --domain https://dungeon-dash.surge.sh dist && rm -rf dist"
   },
   "author": "Michael Pearson & Others",
   "license": "MIT",

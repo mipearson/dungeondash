@@ -83,11 +83,7 @@ export default class Player {
       this.attackLockedUntil = time + attackDuration + attackCooldown;
       body.velocity.normalize().scale(attackSpeed);
       this.sprite.anims.play(attackAnim, true);
-      // this.sprite.setAlpha(0.7);
-      this.sprite.setTint(0xffff88);
     } else {
-      this.sprite.clearTint();
-      // this.sprite.setAlpha(1);
       this.sprite.anims.play(moveAnim, true);
       body.velocity
         .normalize()

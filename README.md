@@ -17,11 +17,12 @@ Otherwise, go nuts.
 ## TODO
 
  * rotate between reference & game scenes
- * rotate between tilesets in reference scene
+ * shaded background for preview to show transparency
  * debug key
  * proper typings for mrpas
  * proper typings for dungeon-factory
  * use correct phaser version of phaser.d.ts
+ * extrude tilesets to avoid webgl issues
 
 ## Credits
 
