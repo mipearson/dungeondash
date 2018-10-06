@@ -13,6 +13,7 @@ export default class Player {
   private attackUntil: number;
   private attackLockedUntil: number;
   private emitter: Phaser.GameObjects.Particles.ParticleEmitter;
+  private body: Phaser.Physics.Arcade.Body;
 
   constructor(x: number, y: number, scene: Phaser.Scene) {
     for (let animName in Graphics.player.frames) {
@@ -41,20 +42,22 @@ export default class Player {
     this.attackLockedUntil = 0;
     const particles = scene.add.particles(Graphics.player.name);
     this.emitter = particles.createEmitter({
-      alpha: { start: 0.7, end: 0, ease: "Expo.easeOut" },
+      alpha: { start: 1, end: 0, ease: "Expo.easeOut" },
       follow: this.sprite,
       quantity: 1,
       lifespan: 1000,
+      scaleX: () => (this.sprite.flipX ? -1 : 1),
       emitCallback: (particle: Phaser.GameObjects.Particles.Particle) => {
         particle.frame = this.sprite.frame;
       }
     });
     this.emitter.stop();
+
+    this.body = <Phaser.Physics.Arcade.Body>this.sprite.body;
   }
 
   update(time: number) {
     const keys = this.keys;
-    const body = <Phaser.Physics.Arcade.Body>this.sprite.body;
     let attackAnim = "";
     let moveAnim = "";
 
@@ -62,22 +65,22 @@ export default class Player {
       return;
     }
     // Stop any previous movement from the last frame
-    body.setVelocity(0);
+    this.body.setVelocity(0);
 
     // Horizontal movement
     if (keys.left!.isDown) {
-      body.setVelocityX(-speed);
+      this.body.setVelocityX(-speed);
       this.sprite.setFlipX(true);
     } else if (keys.right!.isDown) {
-      body.setVelocityX(speed);
+      this.body.setVelocityX(speed);
       this.sprite.setFlipX(false);
     }
 
     // Vertical movement
     if (keys.up!.isDown) {
-      body.setVelocityY(-speed);
+      this.body.setVelocityY(-speed);
     } else if (keys.down!.isDown) {
-      body.setVelocityY(speed);
+      this.body.setVelocityY(speed);
     }
 
     if (keys.left!.isDown || keys.right!.isDown) {
@@ -96,15 +99,17 @@ export default class Player {
     if (keys.space!.isDown && time > this.attackLockedUntil) {
       this.attackUntil = time + attackDuration;
       this.attackLockedUntil = time + attackDuration + attackCooldown;
-      body.velocity.normalize().scale(attackSpeed);
+      this.body.velocity.normalize().scale(attackSpeed);
       this.sprite.anims.play(attackAnim, true);
       this.emitter.start();
     } else {
-      this.emitter.stop();
       this.sprite.anims.play(moveAnim, true);
-      body.velocity
+      this.body.velocity
         .normalize()
         .scale(time > this.attackLockedUntil ? speed : speed / 2);
+      if (this.emitter.on) {
+        this.emitter.stop();
+      }
     }
   }
 }
