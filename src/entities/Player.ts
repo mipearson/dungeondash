@@ -1,8 +1,8 @@
 import Phaser from "phaser";
 import Graphics from "../assets/Graphics";
 
-const speed = 150;
-const attackSpeed = speed * 3;
+const speed = 125;
+const attackSpeed = 500;
 const attackDuration = 165;
 const attackCooldown = attackDuration * 2;
 
@@ -42,10 +42,10 @@ export default class Player {
     this.attackLockedUntil = 0;
     const particles = scene.add.particles(Graphics.player.name);
     this.emitter = particles.createEmitter({
-      alpha: { start: 1, end: 0, ease: "Expo.easeOut" },
+      alpha: { start: 0.7, end: 0, ease: "Cubic.easeOut" },
       follow: this.sprite,
       quantity: 1,
-      lifespan: 1000,
+      lifespan: 200,
       scaleX: () => (this.sprite.flipX ? -1 : 1),
       emitCallback: (particle: Phaser.GameObjects.Particles.Particle) => {
         particle.frame = this.sprite.frame;
@@ -104,9 +104,7 @@ export default class Player {
       this.emitter.start();
     } else {
       this.sprite.anims.play(moveAnim, true);
-      this.body.velocity
-        .normalize()
-        .scale(time > this.attackLockedUntil ? speed : speed / 2);
+      this.body.velocity.normalize().scale(speed);
       if (this.emitter.on) {
         this.emitter.stop();
       }
