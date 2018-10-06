@@ -12,6 +12,7 @@ export default class Player {
 
   private attackUntil: number;
   private attackLockedUntil: number;
+  private emitter: Phaser.GameObjects.Particles.ParticleEmitter;
 
   constructor(x: number, y: number, scene: Phaser.Scene) {
     for (let animName in Graphics.player.frames) {
@@ -38,6 +39,17 @@ export default class Player {
 
     this.attackUntil = 0;
     this.attackLockedUntil = 0;
+    const particles = scene.add.particles(Graphics.player.name);
+    this.emitter = particles.createEmitter({
+      alpha: { start: 0.7, end: 0, ease: "Expo.easeOut" },
+      follow: this.sprite,
+      quantity: 1,
+      lifespan: 1000,
+      emitCallback: (particle: Phaser.GameObjects.Particles.Particle) => {
+        particle.frame = this.sprite.frame;
+      }
+    });
+    this.emitter.stop();
   }
 
   update(time: number) {
@@ -86,7 +98,9 @@ export default class Player {
       this.attackLockedUntil = time + attackDuration + attackCooldown;
       body.velocity.normalize().scale(attackSpeed);
       this.sprite.anims.play(attackAnim, true);
+      this.emitter.start();
     } else {
+      this.emitter.stop();
       this.sprite.anims.play(moveAnim, true);
       body.velocity
         .normalize()
