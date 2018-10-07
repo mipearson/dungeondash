@@ -40,6 +40,17 @@ export default class DungeonScene extends Phaser.Scene {
 
     this.fov = new FOVLayer(map);
 
+    Object.values(Graphics.player.animations).forEach(anim => {
+      if (!this.anims.get(anim.name)) {
+        this.anims.create({
+          key: anim.name,
+          frames: this.anims.generateFrameNumbers(Graphics.player.name, anim),
+          frameRate: anim.frameRate,
+          repeat: anim.repeat ? -1 : 0
+        });
+      }
+    });
+
     this.player = new Player(
       this.tilemap.tileToWorldX(map.startingX),
       this.tilemap.tileToWorldY(map.startingY),

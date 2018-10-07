@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import Graphics from "../assets/Graphics";
 
-const tilesets = [Graphics.environment, Graphics.player, Graphics.util];
+const tilesets = Object.values(Graphics);
 
 export default class ReferenceScene extends Phaser.Scene {
   index: number;
@@ -75,7 +75,7 @@ export default class ReferenceScene extends Phaser.Scene {
         8,
         0x222222
       )
-      .setAltFillStyle(0x333333)
+      .setAltFillStyle(0x2a2a2a)
       .setOutlineStyle();
     layer.setDepth(5);
     this.group.add(grid);

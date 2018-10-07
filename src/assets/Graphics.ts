@@ -1,9 +1,12 @@
 import RogueEnvironment from "../../assets/fongoose/RogueEnvironment.png";
 import RoguePlayer from "../../assets/fongoose/RoguePlayer.png";
+import RogueSlime from "../../assets/fongoose/RogueSlime.png";
+import RogueItems from "../../assets/fongoose/RogueItems.png";
+
 import Util from "../../assets/Util.png";
 
-export default class Graphics {
-  static readonly environment = {
+export default {
+  environment: {
     name: "environment",
     width: 16,
     height: 16,
@@ -34,9 +37,9 @@ export default class Graphics {
         }
       }
     }
-  };
+  },
 
-  static readonly player = {
+  player: {
     name: "player",
     width: 32,
     height: 32,
@@ -98,9 +101,32 @@ export default class Graphics {
         repeat: false
       }
     }
-  };
+  },
 
-  static readonly util = {
+  slime: {
+    name: "slime",
+    width: 32,
+    height: 32,
+    file: RogueSlime,
+    animations: {
+      idle: {
+        name: "slimeIdle",
+        start: 0x01,
+        end: 0x04,
+        frameRate: 6,
+        repeat: true
+      }
+    }
+  },
+
+  items: {
+    name: "items",
+    width: 16,
+    height: 16,
+    file: RogueItems
+  },
+
+  util: {
     name: "util",
     width: 16,
     height: 16,
@@ -108,9 +134,5 @@ export default class Graphics {
     indices: {
       black: 0x00
     }
-  };
-
-  static randomIndex = (indices: Array<number>): number => {
-    return indices[Math.floor(Math.random() * indices.length)];
-  };
-}
+  }
+};

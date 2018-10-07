@@ -6,9 +6,21 @@ const attackSpeed = 500;
 const attackDuration = 165;
 const attackCooldown = attackDuration * 2;
 
+interface Keys {
+  up: Phaser.Input.Keyboard.Key;
+  down: Phaser.Input.Keyboard.Key;
+  left: Phaser.Input.Keyboard.Key;
+  right: Phaser.Input.Keyboard.Key;
+  space: Phaser.Input.Keyboard.Key;
+  w: Phaser.Input.Keyboard.Key;
+  a: Phaser.Input.Keyboard.Key;
+  s: Phaser.Input.Keyboard.Key;
+  d: Phaser.Input.Keyboard.Key;
+}
+
 export default class Player {
   public sprite: Phaser.Physics.Arcade.Sprite;
-  private keys: Phaser.Input.Keyboard.CursorKeys;
+  private keys: Keys;
 
   private attackUntil: number;
   private attackLockedUntil: number;
@@ -16,23 +28,22 @@ export default class Player {
   private body: Phaser.Physics.Arcade.Body;
 
   constructor(x: number, y: number, scene: Phaser.Scene) {
-    Object.values(Graphics.player.animations).forEach(anim => {
-      if (!scene.anims.get(anim.name)) {
-        scene.anims.create({
-          key: anim.name,
-          frames: scene.anims.generateFrameNumbers(Graphics.player.name, anim),
-          frameRate: anim.frameRate,
-          repeat: anim.repeat ? -1 : 0
-        });
-      }
-    });
-
     this.sprite = scene.physics.add.sprite(x, y, Graphics.player.name, 0);
     this.sprite.setSize(8, 8);
     this.sprite.setOffset(12, 20);
     this.sprite.anims.play(Graphics.player.animations.idle.name);
 
-    this.keys = scene.input.keyboard.createCursorKeys();
+    this.keys = scene.input.keyboard.addKeys({
+      up: Phaser.Input.Keyboard.KeyCodes.UP,
+      down: Phaser.Input.Keyboard.KeyCodes.DOWN,
+      left: Phaser.Input.Keyboard.KeyCodes.LEFT,
+      right: Phaser.Input.Keyboard.KeyCodes.RIGHT,
+      space: Phaser.Input.Keyboard.KeyCodes.SPACE,
+      w: "w",
+      a: "a",
+      s: "s",
+      d: "d"
+    }) as Keys;
 
     this.attackUntil = 0;
     this.attackLockedUntil = 0;
@@ -63,27 +74,32 @@ export default class Player {
     }
     this.body.setVelocity(0);
 
-    if (!this.body.blocked.left && keys.left!.isDown) {
+    const left = keys.left.isDown || keys.a.isDown;
+    const right = keys.right.isDown || keys.d.isDown;
+    const up = keys.up.isDown || keys.w.isDown;
+    const down = keys.down.isDown || keys.s.isDown;
+
+    if (!this.body.blocked.left && left) {
       this.body.setVelocityX(-speed);
       this.sprite.setFlipX(true);
-    } else if (!this.body.blocked.right && keys.right!.isDown) {
+    } else if (!this.body.blocked.right && right) {
       this.body.setVelocityX(speed);
       this.sprite.setFlipX(false);
     }
 
-    if (!this.body.blocked.up && keys.up!.isDown) {
+    if (!this.body.blocked.up && up) {
       this.body.setVelocityY(-speed);
-    } else if (!this.body.blocked.down && keys.down!.isDown) {
+    } else if (!this.body.blocked.down && down) {
       this.body.setVelocityY(speed);
     }
 
-    if (keys.left!.isDown || keys.right!.isDown) {
+    if (left || right) {
       moveAnim = Graphics.player.animations.walk.name;
       attackAnim = Graphics.player.animations.slash.name;
-    } else if (keys.down!.isDown) {
+    } else if (down) {
       moveAnim = Graphics.player.animations.walk.name;
       attackAnim = Graphics.player.animations.slashDown.name;
-    } else if (keys.up!.isDown) {
+    } else if (up) {
       moveAnim = Graphics.player.animations.walkBack.name;
       attackAnim = Graphics.player.animations.slashUp.name;
     } else {
