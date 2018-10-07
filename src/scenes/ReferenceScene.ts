@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import Graphics from "../assets/Graphics";
 
-const tilesets = [Graphics.dungeon, Graphics.player, Graphics.util];
+const tilesets = [Graphics.environment, Graphics.player, Graphics.util];
 
 export default class ReferenceScene extends Phaser.Scene {
   index: number;

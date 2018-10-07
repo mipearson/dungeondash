@@ -16,7 +16,7 @@ export default class DungeonScene extends Phaser.Scene {
   cameraResizeNeeded: boolean;
 
   preload(): void {
-    this.load.image(Graphics.dungeon.name, Graphics.dungeon.file);
+    this.load.image(Graphics.environment.name, Graphics.environment.file);
     this.load.image(Graphics.util.name, Graphics.util.file);
     this.load.spritesheet(Graphics.player.name, Graphics.player.file, {
       frameHeight: Graphics.player.height,
@@ -51,8 +51,8 @@ export default class DungeonScene extends Phaser.Scene {
     this.cameras.main.setBounds(
       0,
       0,
-      map.width * Graphics.dungeon.width,
-      map.height * Graphics.dungeon.height
+      map.width * Graphics.environment.width,
+      map.height * Graphics.environment.height
     );
     this.cameras.main.startFollow(this.player.sprite);
 

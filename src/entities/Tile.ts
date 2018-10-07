@@ -56,7 +56,7 @@ export default class Tile {
     const w = neighbours.w && neighbours.w.type === TileType.Wall;
     const e = neighbours.e && neighbours.e.type === TileType.Wall;
 
-    const i = Graphics.dungeon.indices.walls;
+    const i = Graphics.environment.indices.walls;
     
     if (n && e && s && w) { return i.intersections.n_e_s_w; }
     if (n && e && s) { return i.intersections.n_e_s; }

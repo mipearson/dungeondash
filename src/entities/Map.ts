@@ -60,13 +60,15 @@ export default class Map {
     this.startingY = Math.floor(firstRoom.y + firstRoom.height / 2);
 
     this.tilemap = scene.make.tilemap({
-      tileWidth: Graphics.dungeon.width,
-      tileHeight: Graphics.dungeon.height,
+      tileWidth: Graphics.environment.width,
+      tileHeight: Graphics.environment.height,
       width: width,
       height: height
     });
 
-    const dungeonTiles = this.tilemap.addTilesetImage(Graphics.dungeon.name);
+    const dungeonTiles = this.tilemap.addTilesetImage(
+      Graphics.environment.name
+    );
 
     const groundLayer = this.tilemap
       .createBlankDynamicLayer("Ground", dungeonTiles, 0, 0)
@@ -75,7 +77,7 @@ export default class Map {
         0,
         this.width,
         this.height,
-        Graphics.dungeon.indices.floor.outer
+        Graphics.environment.indices.floor.outer
       );
     const wallLayer = this.tilemap.createBlankDynamicLayer(
       "Wall",
