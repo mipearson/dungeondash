@@ -69,18 +69,18 @@ export default class Player {
     this.body.setVelocity(0);
 
     // Horizontal movement
-    if (keys.left!.isDown) {
+    if (!this.body.blocked.left && keys.left!.isDown) {
       this.body.setVelocityX(-speed);
       this.sprite.setFlipX(true);
-    } else if (keys.right!.isDown) {
+    } else if (!this.body.blocked.right && keys.right!.isDown) {
       this.body.setVelocityX(speed);
       this.sprite.setFlipX(false);
     }
 
     // Vertical movement
-    if (keys.up!.isDown) {
+    if (!this.body.blocked.up && keys.up!.isDown) {
       this.body.setVelocityY(-speed);
-    } else if (keys.down!.isDown) {
+    } else if (!this.body.blocked.down && keys.down!.isDown) {
       this.body.setVelocityY(speed);
     }
 
