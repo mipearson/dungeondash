@@ -46,6 +46,7 @@ export default class Player {
       follow: this.sprite,
       quantity: 1,
       lifespan: 200,
+      blendMode: Phaser.BlendModes.ADD,
       scaleX: () => (this.sprite.flipX ? -1 : 1),
       emitCallback: (particle: Phaser.GameObjects.Particles.Particle) => {
         particle.frame = this.sprite.frame;
@@ -96,15 +97,21 @@ export default class Player {
       moveAnim = "player-idle";
     }
 
-    if (keys.space!.isDown && time > this.attackLockedUntil) {
+    if (
+      keys.space!.isDown &&
+      time > this.attackLockedUntil &&
+      this.body.velocity.length() > 0
+    ) {
       this.attackUntil = time + attackDuration;
       this.attackLockedUntil = time + attackDuration + attackCooldown;
       this.body.velocity.normalize().scale(attackSpeed);
       this.sprite.anims.play(attackAnim, true);
       this.emitter.start();
+      this.sprite.setBlendMode(Phaser.BlendModes.ADD);
     } else {
       this.sprite.anims.play(moveAnim, true);
       this.body.velocity.normalize().scale(speed);
+      this.sprite.setBlendMode(Phaser.BlendModes.NORMAL);
       if (this.emitter.on) {
         this.emitter.stop();
       }
