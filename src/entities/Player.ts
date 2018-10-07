@@ -16,25 +16,21 @@ export default class Player {
   private body: Phaser.Physics.Arcade.Body;
 
   constructor(x: number, y: number, scene: Phaser.Scene) {
-    for (let animName in Graphics.player.frames) {
-      if (scene.anims.get(`player-${animName}`)) {
-        continue;
+    Object.values(Graphics.player.animations).forEach(anim => {
+      if (!scene.anims.get(anim.name)) {
+        scene.anims.create({
+          key: anim.name,
+          frames: scene.anims.generateFrameNumbers(Graphics.player.name, anim),
+          frameRate: anim.frameRate,
+          repeat: anim.repeat ? -1 : 0
+        });
       }
-      scene.anims.create({
-        key: `player-${animName}`,
-        frames: scene.anims.generateFrameNumbers(
-          Graphics.player.name,
-          Graphics.player.frames[animName]
-        ),
-        frameRate: Graphics.player.frames[animName].frameRate,
-        repeat: Graphics.player.frames[animName].repeat ? -1 : 0
-      });
-    }
+    });
 
     this.sprite = scene.physics.add.sprite(x, y, Graphics.player.name, 0);
     this.sprite.setSize(8, 8);
     this.sprite.setOffset(12, 20);
-    this.sprite.anims.play("player-idle");
+    this.sprite.anims.play(Graphics.player.animations.idle.name);
 
     this.keys = scene.input.keyboard.createCursorKeys();
 
@@ -65,10 +61,8 @@ export default class Player {
     if (time < this.attackUntil) {
       return;
     }
-    // Stop any previous movement from the last frame
     this.body.setVelocity(0);
 
-    // Horizontal movement
     if (!this.body.blocked.left && keys.left!.isDown) {
       this.body.setVelocityX(-speed);
       this.sprite.setFlipX(true);
@@ -77,7 +71,6 @@ export default class Player {
       this.sprite.setFlipX(false);
     }
 
-    // Vertical movement
     if (!this.body.blocked.up && keys.up!.isDown) {
       this.body.setVelocityY(-speed);
     } else if (!this.body.blocked.down && keys.down!.isDown) {
@@ -85,16 +78,16 @@ export default class Player {
     }
 
     if (keys.left!.isDown || keys.right!.isDown) {
-      moveAnim = "player-walk";
-      attackAnim = "player-slash";
+      moveAnim = Graphics.player.animations.walk.name;
+      attackAnim = Graphics.player.animations.slash.name;
     } else if (keys.down!.isDown) {
-      moveAnim = "player-walk";
-      attackAnim = "player-slashDown";
+      moveAnim = Graphics.player.animations.walk.name;
+      attackAnim = Graphics.player.animations.slashDown.name;
     } else if (keys.up!.isDown) {
-      moveAnim = "player-walkBack";
-      attackAnim = "player-slashUp";
+      moveAnim = Graphics.player.animations.walkBack.name;
+      attackAnim = Graphics.player.animations.slashUp.name;
     } else {
-      moveAnim = "player-idle";
+      moveAnim = Graphics.player.animations.idle.name;
     }
 
     if (

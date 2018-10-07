@@ -2,16 +2,6 @@ import RogueEnvironment from "../../assets/fongoose/RogueEnvironment.png";
 import RoguePlayer from "../../assets/fongoose/RoguePlayer.png";
 import Util from "../../assets/Util.png";
 
-interface Frames {
-  [name: string]: {
-    start?: number;
-    end?: number;
-    frames?: Array<number>;
-    repeat?: boolean;
-    frameRate: number;
-  };
-}
-
 export default class Graphics {
   static readonly environment = {
     name: "environment",
@@ -51,30 +41,63 @@ export default class Graphics {
     width: 32,
     height: 32,
     file: RoguePlayer,
-    frames: {
-      idle: { start: 0x01, end: 0x07, frameRate: 6 },
-      walk: { start: 0x08, end: 0x0d, frameRate: 10 },
-      walkBack: { start: 0x10, end: 0x15, frameRate: 10 },
+    animations: {
+      idle: {
+        name: "playerIdle",
+        start: 0x01,
+        end: 0x07,
+        frameRate: 6,
+        repeat: true
+      },
+      walk: {
+        name: "playerWalk",
+        start: 0x08,
+        end: 0x0d,
+        frameRate: 10,
+        repeat: true
+      },
+      walkBack: {
+        name: "playerWalkBack",
+        start: 0x10,
+        end: 0x15,
+        frameRate: 10,
+        repeat: true
+      },
       // Ideally attacks should be five frames at 30fps to
       // align with the attack duration of 165ms
       slash: {
+        name: "playerSlash",
         frames: [0x18, 0x19, 0x19, 0x1a, 0x1b],
         frameRate: 30,
         repeat: false
       },
       slashUp: {
+        name: "playerSlashUp",
         frames: [0x21, 0x22, 0x22, 0x23, 0x24],
         frameRate: 30,
         repeat: false
       },
       slashDown: {
+        name: "playerSlashDown",
         frames: [0x29, 0x2a, 0x2a, 0x2b, 0x2c],
         frameRate: 30,
         repeat: false
       },
-      hit: { start: 0x30, end: 0x34, frameRate: 24, repeat: false },
-      death: { start: 0x38, end: 0x3d, frameRate: 24, repeat: false }
-    } as Frames
+      hit: {
+        name: "playerHit",
+        start: 0x30,
+        end: 0x34,
+        frameRate: 24,
+        repeat: false
+      },
+      death: {
+        name: "playerDeath",
+        start: 0x38,
+        end: 0x3d,
+        frameRate: 24,
+        repeat: false
+      }
+    }
   };
 
   static readonly util = {
