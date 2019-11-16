@@ -22,6 +22,7 @@ Otherwise, go nuts.
  * proper typings for mrpas
  * proper typings for dungeon-factory
  * extrude tilesets to avoid webgl issues
+ * bring in open source bitmap font
 
 ## Credits
 

@@ -1,8 +1,6 @@
 import Phaser from "phaser";
 import Graphics from "../assets/Graphics";
-
-import Nokia16PNG from "../../assets/privatefonts/nokia16.png";
-import Nokia16XML from "../../assets/privatefonts/nokia16.xml"; // TODO
+import Fonts from "../assets/Fonts";
 
 const tilesets = Object.values(Graphics);
 
@@ -10,7 +8,7 @@ export default class ReferenceScene extends Phaser.Scene {
   index: number;
   group: Phaser.GameObjects.Group | null;
   map: Phaser.Tilemaps.Tilemap | null;
-  title: Phaser.GameObjects.Text | null;
+  title: Phaser.GameObjects.DynamicBitmapText | null;
 
   constructor() {
     super("ReferenceScene");
@@ -22,12 +20,12 @@ export default class ReferenceScene extends Phaser.Scene {
 
   preload(): void {
     tilesets.forEach(t => this.load.image(t.name, t.file));
-    this.load.bitmapFont("nokia16", Nokia16PNG, Nokia16XML);
+    this.load.bitmapFont("default", ...Fonts.default);
   }
 
   create(): void {
     console.log("create referencescene");
-    this.title = this.add.text(20, 10, "", { fontSize: 14 });
+    this.title = this.add.dynamicBitmapText(20, 10, "default", "", 16);
     this.previewTileset();
     this.input.keyboard.on("keydown_N", () => {
       this.index += 1;
@@ -91,8 +89,9 @@ export default class ReferenceScene extends Phaser.Scene {
         const text = this.add.bitmapText(
           this.map.tileToWorldX(x),
           this.map.tileToWorldY(y),
-          "nokia16",
-          idx.toString(16)
+          "default",
+          idx.toString(16),
+          14
         );
         text.setDepth(10);
         this.group.add(text);

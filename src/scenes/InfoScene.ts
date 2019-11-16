@@ -1,8 +1,13 @@
 import Phaser from "phaser";
+import Fonts from "../assets/Fonts";
 
 export default class InfoScene extends Phaser.Scene {
   constructor() {
     super({ key: "InfoScene" });
+  }
+
+  preload(): void {
+    this.load.bitmapFont("default", ...Fonts.default);
   }
 
   create(): void {
@@ -15,10 +20,7 @@ export default class InfoScene extends Phaser.Scene {
       "Credits & more information at",
       "https://github.com/mipearson/dungeondash"
     ];
-    const text = this.add.text(25, 25, content, {
-      fontFamily: "sans-serif",
-      color: "#ffffff"
-    });
-    text.setAlpha(0.9);
+    const text = this.add.bitmapText(25, 25, "default", content, 20);
+    text.setAlpha(0.7);
   }
 }
