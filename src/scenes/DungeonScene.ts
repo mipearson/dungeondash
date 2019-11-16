@@ -73,6 +73,7 @@ export default class DungeonScene extends Phaser.Scene {
     });
 
     this.input.keyboard.on("keydown_R", () => {
+      console.log("keydown_r");
       this.scene.stop("InfoScene");
       this.scene.start("ReferenceScene");
     });

@@ -101,8 +101,8 @@ export default class Map {
       }
     }
     wallLayer.setCollisionBetween(0, 256);
-    this.tilemap.convertLayerToStatic(groundLayer);
     this.wallLayer = this.tilemap.convertLayerToStatic(wallLayer);
+    // this.tilemap.convertLayerToStatic(groundLayer);
   }
 
   tileAt(x: number, y: number): Tile | null {

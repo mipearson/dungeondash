@@ -8,6 +8,7 @@ export default class ReferenceScene extends Phaser.Scene {
   group: Phaser.GameObjects.Group | null;
   map: Phaser.Tilemaps.Tilemap | null;
   title: Phaser.GameObjects.Text | null;
+  metrics: object | null;
 
   constructor() {
     super("ReferenceScene");
@@ -15,6 +16,7 @@ export default class ReferenceScene extends Phaser.Scene {
     this.group = null;
     this.map = null;
     this.title = null;
+    this.metrics = null;
   }
 
   preload(): void {
@@ -22,6 +24,7 @@ export default class ReferenceScene extends Phaser.Scene {
   }
 
   create(): void {
+    console.log("create referencescene");
     this.title = this.add.text(20, 10, "", { fontSize: 14 });
     this.previewTileset();
     this.input.keyboard.on("keydown_N", () => {
@@ -88,9 +91,13 @@ export default class ReferenceScene extends Phaser.Scene {
           this.map.tileToWorldY(y),
           idx.toString(16),
           {
-            fontSize: 14
+            fontSize: 14,
+            metrics: this.metrics
           }
         );
+        if (!this.metrics) {
+          this.metrics = text.getTextMetrics();
+        }
         text.setDepth(10);
         this.group.add(text);
         layer.putTileAt(idx, x, y);
