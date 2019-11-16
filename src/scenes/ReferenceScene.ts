@@ -1,6 +1,9 @@
 import Phaser from "phaser";
 import Graphics from "../assets/Graphics";
 
+import Nokia16PNG from "../../assets/privatefonts/nokia16.png";
+import Nokia16XML from "../../assets/privatefonts/nokia16.xml"; // TODO
+
 const tilesets = Object.values(Graphics);
 
 export default class ReferenceScene extends Phaser.Scene {
@@ -8,7 +11,6 @@ export default class ReferenceScene extends Phaser.Scene {
   group: Phaser.GameObjects.Group | null;
   map: Phaser.Tilemaps.Tilemap | null;
   title: Phaser.GameObjects.Text | null;
-  metrics: object | null;
 
   constructor() {
     super("ReferenceScene");
@@ -16,11 +18,11 @@ export default class ReferenceScene extends Phaser.Scene {
     this.group = null;
     this.map = null;
     this.title = null;
-    this.metrics = null;
   }
 
   preload(): void {
     tilesets.forEach(t => this.load.image(t.name, t.file));
+    this.load.bitmapFont("nokia16", Nokia16PNG, Nokia16XML);
   }
 
   create(): void {
@@ -86,18 +88,12 @@ export default class ReferenceScene extends Phaser.Scene {
     for (let y = 0; y < tiles.rows; y++) {
       for (let x = 0; x < tiles.columns; x++) {
         const idx = y * tiles.columns + x;
-        const text = this.add.text(
+        const text = this.add.bitmapText(
           this.map.tileToWorldX(x),
           this.map.tileToWorldY(y),
-          idx.toString(16),
-          {
-            fontSize: 14,
-            metrics: this.metrics
-          }
+          "nokia16",
+          idx.toString(16)
         );
-        if (!this.metrics) {
-          this.metrics = text.getTextMetrics();
-        }
         text.setDepth(10);
         this.group.add(text);
         layer.putTileAt(idx, x, y);
