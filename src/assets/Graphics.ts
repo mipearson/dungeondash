@@ -44,7 +44,8 @@ const environment = {
     block: 0x17,
     doors: {
       horizontal: 0x81,
-      vertical: 0x90
+      vertical: 0x92,
+      destroyed: 0x35
     },
     walls: {
       alone: 0x14,

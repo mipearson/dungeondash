@@ -117,6 +117,9 @@ export default class DungeonScene extends Phaser.Scene {
     this.physics.add.collider(this.player.sprite, map.wallLayer);
     this.physics.add.collider(this.slimeGroup, map.wallLayer);
 
+    this.physics.add.collider(this.player.sprite, map.doorLayer);
+    this.physics.add.collider(this.slimeGroup, map.doorLayer);
+
     // this.physics.add.overlap(
     //   this.player.sprite,
     //   this.slimeGroup,

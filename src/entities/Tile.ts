@@ -104,7 +104,7 @@ export default class Tile {
     }
 
     if (this.type === TileType.Door) {
-      if (n && s) {
+      if (n || s) {
         return Graphics.environment.indices.doors.vertical
       } else {
         return Graphics.environment.indices.doors.horizontal;

@@ -28,6 +28,7 @@ export default class Map {
   public readonly height: number;
   public readonly tilemap: Phaser.Tilemaps.Tilemap;
   public readonly wallLayer: Phaser.Tilemaps.StaticTilemapLayer;
+  public readonly doorLayer: Phaser.Tilemaps.DynamicTilemapLayer;
 
   public readonly startingX: number;
   public readonly startingY: number;
@@ -96,6 +97,12 @@ export default class Map {
         this.height,
         Graphics.environment.indices.floor.outerCorridor
       );
+    this.doorLayer = this.tilemap.createBlankDynamicLayer(
+      "Door",
+      dungeonTiles,
+      0,
+      0
+    );
     const wallLayer = this.tilemap.createBlankDynamicLayer(
       "Wall",
       dungeonTiles,
@@ -106,12 +113,31 @@ export default class Map {
     for (let x = 0; x < width; x++) {
       for (let y = 0; y < height; y++) {
         const tile = this.tiles[y][x];
-        if (tile.type != TileType.None) {
+        if (tile.type === TileType.Wall) {
           wallLayer.putTileAt(tile.spriteIndex(), x, y);
+        } else if (tile.type === TileType.Door) {
+          this.doorLayer.putTileAt(tile.spriteIndex(), x, y);
         }
       }
     }
     wallLayer.setCollisionBetween(0, 0x7f);
+    const collidableDoors = [
+      Graphics.environment.indices.doors.horizontal,
+      Graphics.environment.indices.doors.vertical
+    ];
+    this.doorLayer.setCollision(collidableDoors);
+
+    this.doorLayer.setTileIndexCallback(
+      collidableDoors,
+      (_: unknown, tile: Phaser.Tilemaps.Tile) => {
+        this.doorLayer.putTileAt(
+          Graphics.environment.indices.doors.destroyed,
+          tile.x,
+          tile.y
+        );
+      },
+      this
+    );
 
     this.wallLayer = this.tilemap.convertLayerToStatic(wallLayer);
 
