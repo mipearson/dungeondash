@@ -43,28 +43,48 @@ export default class DungeonScene extends Phaser.Scene {
     this.slimeGroup = null;
   }
 
+  slimePlayerCollide(
+    playerSprite: Phaser.GameObjects.GameObject,
+    slimeSprite: Phaser.GameObjects.GameObject
+  ) {
+    const slime = this.slimes.find(s => s.sprite === slimeSprite);
+    if (!slime) {
+      console.log("Missing slime for sprite collision!");
+      return;
+    }
+
+    if (this.player!.isAttacking()) {
+      this.slimes = this.slimes.filter(s => s != slime);
+      slime.kill();
+      return false;
+    } else {
+      this.player!.stagger();
+      return true;
+    }
+  }
+
   create(): void {
     Object.values(Graphics.player.animations).forEach(anim => {
-      if (!this.anims.get(anim.name)) {
+      if (!this.anims.get(anim.key)) {
         this.anims.create({
-          key: anim.name,
-          frames: this.anims.generateFrameNumbers(Graphics.player.name, anim),
-          frameRate: anim.frameRate,
-          repeat: anim.repeat ? -1 : 0,
-          yoyo: anim.yoyo
+          ...anim,
+          frames: this.anims.generateFrameNumbers(
+            Graphics.player.name,
+            anim.frames
+          )
         });
       }
     });
 
     // TODO
     Object.values(Graphics.slime.animations).forEach(anim => {
-      if (!this.anims.get(anim.name)) {
+      if (!this.anims.get(anim.key)) {
         this.anims.create({
-          key: anim.name,
-          frames: this.anims.generateFrameNumbers(Graphics.slime.name, anim),
-          frameRate: anim.frameRate,
-          repeat: anim.repeat ? -1 : 0,
-          yoyo: anim.yoyo
+          ...anim,
+          frames: this.anims.generateFrameNumbers(
+            Graphics.slime.name,
+            anim.frames
+          )
         });
       }
     });
@@ -81,7 +101,7 @@ export default class DungeonScene extends Phaser.Scene {
     );
 
     this.slimes = map.slimes;
-    this.slimeGroup = this.add.group(this.slimes.map(s => s.sprite));
+    this.slimeGroup = this.physics.add.group(this.slimes.map(s => s.sprite));
 
     this.cameras.main.setRoundPixels(true);
     this.cameras.main.setZoom(3);
@@ -96,6 +116,21 @@ export default class DungeonScene extends Phaser.Scene {
     this.physics.add.collider(this.player.sprite, map.wallLayer);
     this.physics.add.collider(this.slimeGroup, map.wallLayer);
 
+    // this.physics.add.overlap(
+    //   this.player.sprite,
+    //   this.slimeGroup,
+    //   this.slimePlayerCollide,
+    //   undefined,
+    //   this
+    // );
+    this.physics.add.collider(
+      this.player.sprite,
+      this.slimeGroup,
+      undefined,
+      this.slimePlayerCollide,
+      this
+    );
+
     // for (let slime of this.slimes) {
     //   this.physics.add.collider(slime.sprite, map.wallLayer);
     // }
@@ -107,6 +142,15 @@ export default class DungeonScene extends Phaser.Scene {
     this.input.keyboard.on("keydown_R", () => {
       this.scene.stop("InfoScene");
       this.scene.start("ReferenceScene");
+    });
+
+    this.input.keyboard.on("keydown_Q", () => {
+      console.log(`Q: ${this.physics.world.drawDebug}`);
+      this.physics.world.drawDebug = !this.physics.world.drawDebug;
+      if (!this.physics.world.debugGraphic) {
+        this.physics.world.createDebugGraphic();
+      }
+      this.physics.world.debugGraphic.clear();
     });
 
     this.scene.run("InfoScene");
