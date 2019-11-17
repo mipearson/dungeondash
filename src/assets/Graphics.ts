@@ -42,6 +42,10 @@ const environment = {
       outerCorridor: [0x0d, 0x0d, 0x0d, 0x1d, 0x0f, 0x1f]
     },
     block: 0x17,
+    doors: {
+      horizontal: 0x81,
+      vertical: 0x90
+    },
     walls: {
       alone: 0x14,
       intersections: {
@@ -59,7 +63,9 @@ const environment = {
         n_e: 0x30,
         n_e_w: 0x31,
         n: 0x32,
-        n_w: 0x33
+        n_w: 0x33,
+        e_door: 0x65,
+        w_door: 0x67
       }
     }
   }

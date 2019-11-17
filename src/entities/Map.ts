@@ -51,12 +51,8 @@ export default class Map {
     for (let y = 0; y < height; y++) {
       this.tiles.push([]);
       for (let x = 0; x < width; x++) {
-        this.tiles[y][x] = new Tile(
-          dungeon.tiles[x][y].type === "wall" ? TileType.Wall : TileType.None,
-          x,
-          y,
-          this
-        );
+        const tileType = Tile.tileTypeFor(dungeon.tiles[x][y].type);
+        this.tiles[y][x] = new Tile(tileType, x, y, this);
       }
     }
 
@@ -110,12 +106,13 @@ export default class Map {
     for (let x = 0; x < width; x++) {
       for (let y = 0; y < height; y++) {
         const tile = this.tiles[y][x];
-        if (tile.type === TileType.Wall) {
-          wallLayer.putTileAt(tile.wallIndex(), x, y);
+        if (tile.type != TileType.None) {
+          wallLayer.putTileAt(tile.spriteIndex(), x, y);
         }
       }
     }
-    wallLayer.setCollisionBetween(0, 256);
+    wallLayer.setCollisionBetween(0, 0x7f);
+
     this.wallLayer = this.tilemap.convertLayerToStatic(wallLayer);
 
     this.slimes = [];

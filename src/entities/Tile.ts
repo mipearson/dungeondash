@@ -17,6 +17,16 @@ export default class Tile {
   public desiredAlpha: number; // TODO: Move out of this class, specific to FOV
   public readonly corridor: boolean;
 
+  public static tileTypeFor(type: string): TileType {
+    if (type === "wall") {
+      return TileType.Wall;
+    } else if (type === "door") {
+      return TileType.Door;
+    } else {
+      return TileType.None;
+    }
+  }
+
   constructor(type: TileType, x: number, y: number, map: Map) {
     this.type = type;
     this.collides = type !== TileType.None;
@@ -49,13 +59,13 @@ export default class Tile {
     );
   }
 
-  wallIndex(): number {
-    const modifier = this.corridor ? 8 : 0;
-    return this.rawWallIndex() + modifier;
+  spriteIndex(): number {
+    const modifier = this.type === TileType.Wall && this.corridor ? 8 : 0;
+    return this.rawIndex() + modifier;
   }
 
   // prettier-ignore
-  private rawWallIndex(): number {
+  private rawIndex(): number {
     const neighbours = this.neighbours();
 
     const n = neighbours.n && neighbours.n.type === TileType.Wall;
@@ -63,26 +73,44 @@ export default class Tile {
     const w = neighbours.w && neighbours.w.type === TileType.Wall;
     const e = neighbours.e && neighbours.e.type === TileType.Wall;
 
+    const wDoor = neighbours.w && neighbours.w.type === TileType.Door;
+    const eDoor = neighbours.e && neighbours.e.type === TileType.Door;
+
     const i = Graphics.environment.indices.walls;
 
-    if (n && e && s && w) { return i.intersections.n_e_s_w; }
-    if (n && e && s) { return i.intersections.n_e_s; }
-    if (n && s && w) { return i.intersections.n_s_w; }
-    if (e && s && w) { return i.intersections.e_s_w; }
-    if (n && e && w) { return i.intersections.n_e_w; }
+    if (this.type === TileType.Wall) {
+      if (n && e && s && w) { return i.intersections.n_e_s_w; }
+      if (n && e && s) { return i.intersections.n_e_s; }
+      if (n && s && w) { return i.intersections.n_s_w; }
+      if (e && s && w) { return i.intersections.e_s_w; }
+      if (n && e && w) { return i.intersections.n_e_w; }
 
-    if (e && s) { return i.intersections.e_s; }
-    if (e && w) { return i.intersections.e_w; }
-    if (s && w) { return i.intersections.s_w; }
-    if (n && s) { return i.intersections.n_s; }
-    if (n && e) { return i.intersections.n_e; }
-    if (n && w) { return i.intersections.n_w; }
+      if (e && s) { return i.intersections.e_s; }
+      if (e && w) { return i.intersections.e_w; }
+      if (s && w) { return i.intersections.s_w; }
+      if (n && s) { return i.intersections.n_s; }
+      if (n && e) { return i.intersections.n_e; }
+      if (n && w) { return i.intersections.n_w; }
 
-    if (n) { return i.intersections.n; }
-    if (s) { return i.intersections.s; }
-    if (e) { return i.intersections.e; }
-    if (w) { return i.intersections.w; }
+      if (w && eDoor) { return i.intersections.e_door; }
+      if (e && wDoor) { return i.intersections.w_door; }
 
-    return i.alone;
+      if (n) { return i.intersections.n; }
+      if (s) { return i.intersections.s; }
+      if (e) { return i.intersections.e; }
+      if (w) { return i.intersections.w; }
+
+      return i.alone;
+    }
+
+    if (this.type === TileType.Door) {
+      if (n && s) {
+        return Graphics.environment.indices.doors.vertical
+      } else {
+        return Graphics.environment.indices.doors.horizontal;
+      }
+    }
+
+    return 0;
   }
 }
