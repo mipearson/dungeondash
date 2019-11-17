@@ -17,6 +17,7 @@ export default class DungeonScene extends Phaser.Scene {
   fov: FOVLayer | null;
   tilemap: Phaser.Tilemaps.Tilemap | null;
   cameraResizeNeeded: boolean;
+  roomDebugGraphics?: Phaser.GameObjects.Graphics;
 
   preload(): void {
     this.load.image(Graphics.environment.name, Graphics.environment.file);
@@ -151,7 +152,24 @@ export default class DungeonScene extends Phaser.Scene {
         this.physics.world.createDebugGraphic();
       }
       this.physics.world.debugGraphic.clear();
+      this.roomDebugGraphics!.setVisible(this.physics.world.drawDebug);
     });
+
+    this.input.keyboard.on("keydown_F", () => {
+      this.fov!.layer.setVisible(!this.fov!.layer.visible);
+    });
+
+    this.roomDebugGraphics = this.add.graphics({ x: 0, y: 0 });
+    this.roomDebugGraphics.setVisible(false);
+    this.roomDebugGraphics.lineStyle(2, 0xff5500, 0.5);
+    for (let room of map.rooms) {
+      this.roomDebugGraphics.strokeRect(
+        this.tilemap!.tileToWorldX(room.x),
+        this.tilemap!.tileToWorldY(room.y),
+        this.tilemap!.tileToWorldX(room.width),
+        this.tilemap!.tileToWorldY(room.height)
+      );
+    }
 
     this.scene.run("InfoScene");
   }

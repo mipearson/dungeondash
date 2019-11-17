@@ -15,6 +15,7 @@ export default class Tile {
   public readonly y: number;
   public seen: boolean;
   public desiredAlpha: number; // TODO: Move out of this class, specific to FOV
+  public readonly corridor: boolean;
 
   constructor(type: TileType, x: number, y: number, map: Map) {
     this.type = type;
@@ -24,6 +25,7 @@ export default class Tile {
     this.y = y;
     this.seen = false;
     this.desiredAlpha = 1;
+    this.corridor = !map.withinRoom(x, y);
   }
 
   neighbours(): { [dir: string]: Tile | null } {
@@ -47,8 +49,13 @@ export default class Tile {
     );
   }
 
+  wallIndex(): number {
+    const modifier = this.corridor ? 8 : 0;
+    return this.rawWallIndex() + modifier;
+  }
+
   // prettier-ignore
-  wallIndex() {
+  private rawWallIndex(): number {
     const neighbours = this.neighbours();
 
     const n = neighbours.n && neighbours.n.type === TileType.Wall;
@@ -57,7 +64,7 @@ export default class Tile {
     const e = neighbours.e && neighbours.e.type === TileType.Wall;
 
     const i = Graphics.environment.indices.walls;
-    
+
     if (n && e && s && w) { return i.intersections.n_e_s_w; }
     if (n && e && s) { return i.intersections.n_e_s; }
     if (n && s && w) { return i.intersections.n_s_w; }

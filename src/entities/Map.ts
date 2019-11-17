@@ -4,9 +4,22 @@ import Tile, { TileType } from "./Tile";
 import Slime from "./Slime";
 import Graphics from "../assets/Graphics";
 
+interface DungeonFactoryRoom {
+  height: number;
+  width: number;
+  x: number;
+  y: number;
+  getBoundingBox: () => {
+    top: number;
+    left: number;
+    right: number;
+    bottom: number;
+  };
+}
+
 interface DungeonFactoryOutput {
   tiles: { type: string }[][];
-  rooms: { height: number; width: number; x: number; y: number }[];
+  rooms: DungeonFactoryRoom[];
 }
 
 export default class Map {
@@ -21,11 +34,15 @@ export default class Map {
 
   public readonly slimes: Slime[];
 
+  public readonly rooms: DungeonFactoryRoom[];
+
   constructor(width: number, height: number, scene: Phaser.Scene) {
     const dungeon = DungeonFactory.generate({
       width: width,
       height: height
     }) as DungeonFactoryOutput;
+    this.rooms = dungeon.rooms;
+    console.log(this.rooms);
 
     this.width = width;
     this.height = height;
@@ -81,7 +98,7 @@ export default class Map {
         0,
         this.width,
         this.height,
-        Graphics.environment.indices.floor.outer
+        Graphics.environment.indices.floor.outerCorridor
       );
     const wallLayer = this.tilemap.createBlankDynamicLayer(
       "Wall",
@@ -104,6 +121,14 @@ export default class Map {
     this.slimes = [];
 
     for (let room of dungeon.rooms) {
+      groundLayer.randomize(
+        room.x - 1,
+        room.y - 1,
+        room.width + 2,
+        room.height + 2,
+        Graphics.environment.indices.floor.outer
+      );
+
       if (room.height < 4 || room.width < 4) {
         continue;
       }
@@ -134,5 +159,16 @@ export default class Map {
       return null;
     }
     return this.tiles[y][x];
+  }
+
+  withinRoom(x: number, y: number): boolean {
+    // x = x + 1; // Dungeon rooms are offset by one.
+    // y = y + 1;
+    return (
+      this.rooms.find(r => {
+        const { top, left, right, bottom } = r.getBoundingBox();
+        return y >= top - 1 && y <= bottom && x >= left - 1 && x <= right;
+      }) != undefined
+    );
   }
 }
