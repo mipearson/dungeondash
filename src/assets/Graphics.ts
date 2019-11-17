@@ -50,21 +50,24 @@ export default {
         start: 0x01,
         end: 0x07,
         frameRate: 6,
-        repeat: true
+        repeat: true,
+        yoyo: false
       },
       walk: {
         name: "playerWalk",
         start: 0x08,
         end: 0x0d,
         frameRate: 10,
-        repeat: true
+        repeat: true,
+        yoyo: false
       },
       walkBack: {
         name: "playerWalkBack",
         start: 0x10,
         end: 0x15,
         frameRate: 10,
-        repeat: true
+        repeat: true,
+        yoyo: false
       },
       // Ideally attacks should be five frames at 30fps to
       // align with the attack duration of 165ms
@@ -72,33 +75,38 @@ export default {
         name: "playerSlash",
         frames: [0x18, 0x19, 0x19, 0x1a, 0x1b],
         frameRate: 30,
-        repeat: false
+        repeat: false,
+        yoyo: false
       },
       slashUp: {
         name: "playerSlashUp",
         frames: [0x21, 0x22, 0x22, 0x23, 0x24],
         frameRate: 30,
-        repeat: false
+        repeat: false,
+        yoyo: false
       },
       slashDown: {
         name: "playerSlashDown",
         frames: [0x29, 0x2a, 0x2a, 0x2b, 0x2c],
         frameRate: 30,
-        repeat: false
+        repeat: false,
+        yoyo: false
       },
       hit: {
         name: "playerHit",
         start: 0x30,
         end: 0x34,
         frameRate: 24,
-        repeat: false
+        repeat: false,
+        yoyo: false
       },
       death: {
         name: "playerDeath",
         start: 0x38,
         end: 0x3d,
         frameRate: 24,
-        repeat: false
+        repeat: false,
+        yoyo: false
       }
     }
   },
@@ -111,10 +119,19 @@ export default {
     animations: {
       idle: {
         name: "slimeIdle",
-        start: 0x01,
-        end: 0x04,
+        start: 0x00,
+        end: 0x03,
+        frameRate: 4,
+        repeat: true,
+        yoyo: false
+      },
+      move: {
+        name: "slimeMove",
+        start: 0x10,
+        end: 0x16,
         frameRate: 6,
-        repeat: true
+        repeat: true,
+        yoyo: false
       }
     }
   },

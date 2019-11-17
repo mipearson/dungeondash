@@ -1,14 +1,16 @@
-import Tile, { TileType } from "../entities/Tile";
 import DungeonFactory from "dungeon-factory";
+
+import Tile, { TileType } from "./Tile";
+import Slime from "./Slime";
 import Graphics from "../assets/Graphics";
 
 interface DungeonFactoryOutput {
-  tiles: Array<Array<{ type: string }>>;
-  rooms: Array<{ height: number; width: number; x: number; y: number }>;
+  tiles: { type: string }[][];
+  rooms: { height: number; width: number; x: number; y: number }[];
 }
 
 export default class Map {
-  public readonly tiles: Array<Array<Tile>>;
+  public readonly tiles: Tile[][];
   public readonly width: number;
   public readonly height: number;
   public readonly tilemap: Phaser.Tilemaps.Tilemap;
@@ -16,6 +18,8 @@ export default class Map {
 
   public readonly startingX: number;
   public readonly startingY: number;
+
+  public readonly slimes: Slime[];
 
   constructor(width: number, height: number, scene: Phaser.Scene) {
     const dungeon = DungeonFactory.generate({
@@ -90,18 +94,38 @@ export default class Map {
       for (let y = 0; y < height; y++) {
         const tile = this.tiles[y][x];
         if (tile.type === TileType.Wall) {
-          // let idx = 0;
-          // if (tile.nesw.east && tile.nesw.east.type !== "wall") {
-          //   idx = randomTile(Tiles.World.Wall.Brown.Horizontal);
-          // } else {
-          //   idx = randomTile(Tiles.World.Wall.Brown.Vertical);
-          // }
           wallLayer.putTileAt(tile.wallIndex(), x, y);
         }
       }
     }
     wallLayer.setCollisionBetween(0, 256);
     this.wallLayer = this.tilemap.convertLayerToStatic(wallLayer);
+
+    this.slimes = [];
+
+    for (let room of dungeon.rooms) {
+      if (room.height < 4 || room.width < 4) {
+        continue;
+      }
+
+      const roomTL = this.tilemap.tileToWorldXY(room.x + 1, room.y + 1);
+      const roomBounds = this.tilemap.tileToWorldXY(
+        room.x + room.width - 1,
+        room.y + room.height - 1
+      );
+      const numSlimes = Phaser.Math.Between(1, 3);
+      for (let i = 0; i < numSlimes; i++) {
+        this.slimes.push(
+          new Slime(
+            Phaser.Math.Between(roomTL.x, roomBounds.x),
+            Phaser.Math.Between(roomTL.y, roomBounds.y),
+            scene
+          )
+        );
+      }
+    }
+
+    // TODO
     // this.tilemap.convertLayerToStatic(groundLayer);
   }
 

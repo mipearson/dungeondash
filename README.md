@@ -23,6 +23,9 @@ Otherwise, go nuts.
  * proper typings for dungeon-factory
  * extrude tilesets to avoid webgl issues
  * bring in open source bitmap font
+ * doors
+ * slimes
+ * support window resize
 
 ## Credits
 
