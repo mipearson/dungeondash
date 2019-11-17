@@ -3,6 +3,7 @@ import DungeonFactory from "dungeon-factory";
 import Tile, { TileType } from "./Tile";
 import Slime from "./Slime";
 import Graphics from "../assets/Graphics";
+import DungeonScene from "../scenes/DungeonScene";
 
 interface DungeonFactoryRoom {
   height: number;
@@ -37,7 +38,7 @@ export default class Map {
 
   public readonly rooms: DungeonFactoryRoom[];
 
-  constructor(width: number, height: number, scene: Phaser.Scene) {
+  constructor(width: number, height: number, scene: DungeonScene) {
     const dungeon = DungeonFactory.generate({
       width: width,
       height: height
@@ -135,6 +136,8 @@ export default class Map {
           tile.x,
           tile.y
         );
+        this.tileAt(tile.x, tile.y)!.open();
+        scene.fov!.recalculate();
       },
       this
     );

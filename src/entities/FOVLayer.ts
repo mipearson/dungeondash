@@ -42,12 +42,21 @@ export default class FOVLayer {
       .createBlankDynamicLayer("Dark", utilTiles, 0, 0)
       .fill(Graphics.util.indices.black);
 
-    this.mrpas = new Mrpas(map.width, map.height, (x: number, y: number) => {
-      return map.tiles[y] && !map.tiles[y][x].collides;
-    });
+    this.map = map;
+    this.recalculate();
 
     this.lastPos = new Phaser.Math.Vector2({ x: -1, y: -1 });
-    this.map = map;
+  }
+
+  recalculate() {
+    console.log("recalculate");
+    this.mrpas = new Mrpas(
+      this.map.width,
+      this.map.height,
+      (x: number, y: number) => {
+        return this.map.tiles[y] && !this.map.tiles[y][x].collides;
+      }
+    );
   }
 
   update(

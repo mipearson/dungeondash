@@ -8,7 +8,7 @@ export enum TileType {
 }
 
 export default class Tile {
-  public readonly collides: boolean;
+  public collides: boolean;
   public readonly type: TileType;
   public readonly map: Map;
   public readonly x: number;
@@ -16,6 +16,7 @@ export default class Tile {
   public seen: boolean;
   public desiredAlpha: number; // TODO: Move out of this class, specific to FOV
   public readonly corridor: boolean;
+  private opened: boolean;
 
   public static tileTypeFor(type: string): TileType {
     if (type === "wall") {
@@ -36,6 +37,11 @@ export default class Tile {
     this.seen = false;
     this.desiredAlpha = 1;
     this.corridor = !map.withinRoom(x, y);
+    this.opened = false;
+  }
+
+  open() {
+    this.collides = false;
   }
 
   neighbours(): { [dir: string]: Tile | null } {
@@ -54,7 +60,7 @@ export default class Tile {
   isEnclosed(): boolean {
     return (
       Object.values(this.neighbours()).filter(
-        t => !t || t.type === TileType.Wall
+        t => !t || (t.type === TileType.Wall && t.corridor === this.corridor)
       ).length === 8
     );
   }
@@ -68,10 +74,10 @@ export default class Tile {
   private rawIndex(): number {
     const neighbours = this.neighbours();
 
-    const n = neighbours.n && neighbours.n.type === TileType.Wall;
-    const s = neighbours.s && neighbours.s.type === TileType.Wall;
-    const w = neighbours.w && neighbours.w.type === TileType.Wall;
-    const e = neighbours.e && neighbours.e.type === TileType.Wall;
+    const n = neighbours.n && neighbours.n.type === TileType.Wall && neighbours.n.corridor === this.corridor;
+    const s = neighbours.s && neighbours.s.type === TileType.Wall && neighbours.s.corridor === this.corridor
+    const w = neighbours.w && neighbours.w.type === TileType.Wall && neighbours.w.corridor === this.corridor
+    const e = neighbours.e && neighbours.e.type === TileType.Wall && neighbours.e.corridor === this.corridor
 
     const wDoor = neighbours.w && neighbours.w.type === TileType.Door;
     const eDoor = neighbours.e && neighbours.e.type === TileType.Door;
