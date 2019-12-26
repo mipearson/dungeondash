@@ -34,13 +34,15 @@ export default class Player {
   private time: number;
   private staggered: boolean;
   private scene: Phaser.Scene;
+  private facingUp: boolean;
 
   constructor(x: number, y: number, scene: Phaser.Scene) {
     this.scene = scene;
     this.sprite = scene.physics.add.sprite(x, y, Graphics.player.name, 0);
     this.sprite.setSize(8, 8);
-    this.sprite.setOffset(12, 20);
+    this.sprite.setOffset(20, 28);
     this.sprite.anims.play(Graphics.player.animations.idle.key);
+    this.facingUp = false;
 
     this.keys = scene.input.keyboard.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.UP,
@@ -159,12 +161,17 @@ export default class Player {
     if (left || right) {
       moveAnim = Graphics.player.animations.walk.key;
       attackAnim = Graphics.player.animations.slash.key;
+      this.facingUp = false;
     } else if (down) {
       moveAnim = Graphics.player.animations.walk.key;
       attackAnim = Graphics.player.animations.slashDown.key;
+      this.facingUp = false;
     } else if (up) {
       moveAnim = Graphics.player.animations.walkBack.key;
       attackAnim = Graphics.player.animations.slashUp.key;
+      this.facingUp = true;
+    } else if (this.facingUp) {
+      moveAnim = Graphics.player.animations.idleBack.key;
     } else {
       moveAnim = Graphics.player.animations.idle.key;
     }

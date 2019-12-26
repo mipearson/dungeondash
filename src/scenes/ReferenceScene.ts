@@ -66,7 +66,7 @@ export default class ReferenceScene extends Phaser.Scene {
       tiles.columns,
       tiles.rows
     );
-    layer.setScale(3);
+    layer.setScale(tileset.width > 32 ? 2 : 3);
 
     const grid = this.add
       .grid(

@@ -1,7 +1,7 @@
-import RogueEnvironment from "../../assets/fongoose/RogueEnvironment.png";
-import RoguePlayer from "../../assets/fongoose/RoguePlayer.png";
-import RogueSlime from "../../assets/fongoose/RogueSlime.png";
-import RogueItems from "../../assets/fongoose/RogueItems.png";
+import RogueEnvironment from "../../assets/fongoose/RogueEnvironment16x16.png";
+import RoguePlayer from "../../assets/fongoose/RoguePlayer_48x48.png";
+import RogueSlime from "../../assets/fongoose/RogueSlime32x32.png";
+import RogueItems from "../../assets/fongoose/RogueItems16x16.png";
 
 import Util from "../../assets/Util.png";
 
@@ -74,8 +74,8 @@ const environment = {
 
 const player: AnimSet = {
   name: "player",
-  width: 32,
-  height: 32,
+  width: 48,
+  height: 48,
   file: RoguePlayer,
   animations: {
     idle: {
@@ -84,15 +84,21 @@ const player: AnimSet = {
       frameRate: 6,
       repeat: -1
     },
+    idleBack: {
+      key: "playerIdleBack",
+      frames: { start: 0x0a, end: 0x11 },
+      frameRate: 6,
+      repeat: -1
+    },
     walk: {
       key: "playerWalk",
-      frames: { start: 0x08, end: 0x0d },
+      frames: { start: 0x14, end: 0x19 },
       frameRate: 10,
       repeat: -1
     },
     walkBack: {
       key: "playerWalkBack",
-      frames: { start: 0x10, end: 0x15 },
+      frames: { start: 0x1e, end: 0x23 },
       frameRate: 10,
       repeat: -1
     },
@@ -100,28 +106,23 @@ const player: AnimSet = {
     // align with the attack duration of 165ms
     slash: {
       key: "playerSlash",
-      frames: { frames: [0x18, 0x19, 0x19, 0x1a, 0x1b] },
+      frames: { frames: [0x1a, 0x1a, 0x1a, 0x1b, 0x1c] },
       frameRate: 30
     },
     slashUp: {
       key: "playerSlashUp",
-      frames: { frames: [0x21, 0x22, 0x22, 0x23, 0x24] },
+      frames: { frames: [0x2e, 0x2e, 0x2e, 0x2f, 0x30] },
       frameRate: 30
     },
     slashDown: {
       key: "playerSlashDown",
-      frames: { frames: [0x29, 0x2a, 0x2a, 0x2b, 0x2c] },
+      frames: { frames: [0x24, 0x24, 0x24, 0x25, 0x26] },
       frameRate: 30
     },
     stagger: {
       key: "playerStagger",
-      frames: { frames: [0x30, 0x31, 0x32, 0x32, 0x33, 0x34] },
+      frames: { frames: [0x38, 0x38, 0x39, 0x3a] },
       frameRate: 30
-    },
-    death: {
-      key: "playerDeath",
-      frames: { start: 0x38, end: 0x3d },
-      frameRate: 24
     }
   }
 };
@@ -134,20 +135,19 @@ const slime: AnimSet = {
   animations: {
     idle: {
       key: "slimeIdle",
-      frames: { start: 0x00, end: 0x03 },
-      frameRate: 4,
+      frames: { start: 0x00, end: 0x05 },
+      frameRate: 6,
       repeat: -1
     },
     move: {
       key: "slimeMove",
-      frames: { start: 0x10, end: 0x16 },
-      frameRate: 6
+      frames: { start: 0x08, end: 0x0e },
+      frameRate: 8,
+      repeat: -1
     },
     death: {
       key: "slimeDeath",
-      frames: {
-        frames: [0x1f, 0x1e, 0x1d, 0x1c, 0x1b, 0x1a, 0x19, 0x18, 0x17]
-      },
+      frames: { start: 0x20, end: 0x26 },
       frameRate: 16,
       hideOnComplete: true
     }
