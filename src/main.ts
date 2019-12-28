@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import ReferenceScene from "./scenes/ReferenceScene";
 import DungeonScene from "./scenes/DungeonScene";
 import InfoScene from "./scenes/InfoScene";
+// import SceneWatcherPlugin from "phaser-plugin-scene-watcher";
 
 new Phaser.Game({
   type: Phaser.WEBGL,
@@ -13,4 +14,7 @@ new Phaser.Game({
   scale: {
     mode: Phaser.Scale.RESIZE
   }
+  // plugins: {
+  //   global: [{ key: "SceneWatcher", plugin: SceneWatcherPlugin, start: true }]
+  // }
 });

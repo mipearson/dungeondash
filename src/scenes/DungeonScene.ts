@@ -63,6 +63,10 @@ export default class DungeonScene extends Phaser.Scene {
   }
 
   create(): void {
+    this.events.on("wake", () => {
+      this.scene.run("InfoScene");
+    });
+
     Object.values(Graphics.player.animations).forEach(anim => {
       if (!this.anims.get(anim.key)) {
         this.anims.create({
@@ -139,7 +143,8 @@ export default class DungeonScene extends Phaser.Scene {
 
     this.input.keyboard.on("keydown_R", () => {
       this.scene.stop("InfoScene");
-      this.scene.start("ReferenceScene");
+      this.scene.run("ReferenceScene");
+      this.scene.sleep();
     });
 
     this.input.keyboard.on("keydown_Q", () => {
@@ -172,6 +177,7 @@ export default class DungeonScene extends Phaser.Scene {
 
   update(time: number, delta: number) {
     this.player!.update(time);
+
     const camera = this.cameras.main;
 
     for (let slime of this.slimes) {
