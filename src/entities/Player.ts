@@ -43,6 +43,7 @@ export default class Player {
     this.sprite.setOffset(20, 28);
     this.sprite.anims.play(Graphics.player.animations.idle.key);
     this.facingUp = false;
+    this.sprite.setDepth(5);
 
     this.keys = scene.input.keyboard.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.UP,

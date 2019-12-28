@@ -83,14 +83,49 @@ export default class Map {
         this.height,
         Graphics.environment.indices.floor.outerCorridor
       );
-    this.doorLayer = this.tilemap.createBlankDynamicLayer(
-      "Door",
+
+    this.slimes = [];
+
+    for (let room of dungeon.rooms) {
+      groundLayer.randomize(
+        room.x - 1,
+        room.y - 1,
+        room.width + 2,
+        room.height + 2,
+        Graphics.environment.indices.floor.outer
+      );
+
+      if (room.height < 4 || room.width < 4) {
+        continue;
+      }
+
+      const roomTL = this.tilemap.tileToWorldXY(room.x + 1, room.y + 1);
+      const roomBounds = this.tilemap.tileToWorldXY(
+        room.x + room.width - 1,
+        room.y + room.height - 1
+      );
+      const numSlimes = Phaser.Math.Between(1, 3);
+      for (let i = 0; i < numSlimes; i++) {
+        this.slimes.push(
+          new Slime(
+            Phaser.Math.Between(roomTL.x, roomBounds.x),
+            Phaser.Math.Between(roomTL.y, roomBounds.y),
+            scene
+          )
+        );
+      }
+    }
+    this.tilemap.convertLayerToStatic(groundLayer).setDepth(1);
+
+    const wallLayer = this.tilemap.createBlankDynamicLayer(
+      "Wall",
       dungeonTiles,
       0,
       0
     );
-    const wallLayer = this.tilemap.createBlankDynamicLayer(
-      "Wall",
+
+    this.doorLayer = this.tilemap.createBlankDynamicLayer(
+      "Door",
       dungeonTiles,
       0,
       0
@@ -126,43 +161,10 @@ export default class Map {
       },
       this
     );
+    this.doorLayer.setDepth(3);
 
     this.wallLayer = this.tilemap.convertLayerToStatic(wallLayer);
-
-    this.slimes = [];
-
-    for (let room of dungeon.rooms) {
-      groundLayer.randomize(
-        room.x - 1,
-        room.y - 1,
-        room.width + 2,
-        room.height + 2,
-        Graphics.environment.indices.floor.outer
-      );
-
-      if (room.height < 4 || room.width < 4) {
-        continue;
-      }
-
-      const roomTL = this.tilemap.tileToWorldXY(room.x + 1, room.y + 1);
-      const roomBounds = this.tilemap.tileToWorldXY(
-        room.x + room.width - 1,
-        room.y + room.height - 1
-      );
-      const numSlimes = Phaser.Math.Between(1, 3);
-      for (let i = 0; i < numSlimes; i++) {
-        this.slimes.push(
-          new Slime(
-            Phaser.Math.Between(roomTL.x, roomBounds.x),
-            Phaser.Math.Between(roomTL.y, roomBounds.y),
-            scene
-          )
-        );
-      }
-    }
-
-    // TODO
-    // this.tilemap.convertLayerToStatic(groundLayer);
+    this.wallLayer.setDepth(2);
   }
 
   tileAt(x: number, y: number): Tile | null {

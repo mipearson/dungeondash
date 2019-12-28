@@ -13,6 +13,7 @@ export default class Slime {
     this.sprite.setSize(12, 10);
     this.sprite.setOffset(10, 14);
     this.sprite.anims.play(Graphics.slime.animations.idle.key);
+    this.sprite.setDepth(10);
 
     this.body = <Phaser.Physics.Arcade.Body>this.sprite.body;
     this.nextAction = 0;

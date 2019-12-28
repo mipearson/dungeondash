@@ -41,6 +41,7 @@ export default class FOVLayer {
     this.layer = map.tilemap
       .createBlankDynamicLayer("Dark", utilTiles, 0, 0)
       .fill(Graphics.util.indices.black);
+    this.layer.setDepth(100);
 
     this.map = map;
     this.recalculate();
