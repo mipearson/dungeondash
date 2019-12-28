@@ -1,6 +1,6 @@
 import Graphics from "../assets/Graphics";
 import Map from "../entities/Map";
-import Mrpas from "mrpas";
+import { Mrpas } from "mrpas";
 import Phaser from "phaser";
 
 const radius = 7;
@@ -31,7 +31,7 @@ function updateTileAlpha(
 
 export default class FOVLayer {
   public layer: Phaser.Tilemaps.DynamicTilemapLayer;
-  private mrpas: any;
+  private mrpas: Mrpas | undefined;
   private lastPos: Phaser.Math.Vector2;
   private map: Map;
 
@@ -49,7 +49,6 @@ export default class FOVLayer {
   }
 
   recalculate() {
-    console.log("recalculate");
     this.mrpas = new Mrpas(
       this.map.width,
       this.map.height,
@@ -91,7 +90,7 @@ export default class FOVLayer {
       })
     );
 
-    this.mrpas.compute(
+    this.mrpas!.compute(
       pos.x,
       pos.y,
       radius,

@@ -12,9 +12,9 @@
   "license": "MIT",
   "dependencies": {
     "dungeon-factory": "^1.0.6",
-    "mrpas": "^1.2.1",
+    "mrpas": "^2.0.0",
     "parcel": "^1.12.4",
-    "phaser": "^3.20.1",
-    "typescript": "^3.7.2"
+    "phaser": "^3.21.0",
+    "typescript": "^3.7.4"
   }
 }
