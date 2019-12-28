@@ -45,7 +45,7 @@ export default class DungeonScene extends Phaser.Scene {
   }
 
   slimePlayerCollide(
-    playerSprite: Phaser.GameObjects.GameObject,
+    _: Phaser.GameObjects.GameObject,
     slimeSprite: Phaser.GameObjects.GameObject
   ) {
     const slime = this.slimes.find(s => s.sprite === slimeSprite);

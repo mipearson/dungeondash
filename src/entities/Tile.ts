@@ -16,7 +16,6 @@ export default class Tile {
   public seen: boolean;
   public desiredAlpha: number; // TODO: Move out of this class, specific to FOV
   public readonly corridor: boolean;
-  private opened: boolean;
 
   public static tileTypeFor(type: string): TileType {
     if (type === "wall") {
@@ -37,7 +36,6 @@ export default class Tile {
     this.seen = false;
     this.desiredAlpha = 1;
     this.corridor = !map.withinRoom(x, y);
-    this.opened = false;
   }
 
   open() {

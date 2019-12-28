@@ -7,7 +7,6 @@ export default class Slime {
   public readonly sprite: Phaser.Physics.Arcade.Sprite;
   private readonly body: Phaser.Physics.Arcade.Body;
   private nextAction: number;
-  private dying: boolean;
 
   constructor(x: number, y: number, scene: Phaser.Scene) {
     this.sprite = scene.physics.add.sprite(x, y, Graphics.slime.name, 0);
@@ -17,7 +16,6 @@ export default class Slime {
 
     this.body = <Phaser.Physics.Arcade.Body>this.sprite.body;
     this.nextAction = 0;
-    this.dying = false;
     this.body.bounce.set(0, 0);
     this.body.setImmovable(true);
   }
@@ -53,7 +51,6 @@ export default class Slime {
 
   kill() {
     this.sprite.anims.play(Graphics.slime.animations.death.key, false);
-    this.dying = true;
     this.sprite.disableBody();
   }
 }
