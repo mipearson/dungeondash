@@ -25,7 +25,6 @@ export default class Map {
       height: height
     });
     this.rooms = dungeon.rooms;
-    console.log(this.rooms);
 
     this.width = width;
     this.height = height;

@@ -24,7 +24,6 @@ export default class ReferenceScene extends Phaser.Scene {
   }
 
   create(): void {
-    console.log("create referencescene");
     this.title = this.add.dynamicBitmapText(20, 10, "default", "", 12);
     this.previewTileset();
     this.input.keyboard.on("keydown_N", () => {
@@ -37,7 +36,6 @@ export default class ReferenceScene extends Phaser.Scene {
     });
 
     this.input.keyboard.on("keydown_R", () => {
-      console.log("starting dungeon");
       this.scene.start("DungeonScene");
     });
   }

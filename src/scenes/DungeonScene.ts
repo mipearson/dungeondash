@@ -143,7 +143,6 @@ export default class DungeonScene extends Phaser.Scene {
     });
 
     this.input.keyboard.on("keydown_Q", () => {
-      console.log(`Q: ${this.physics.world.drawDebug}`);
       this.physics.world.drawDebug = !this.physics.world.drawDebug;
       if (!this.physics.world.debugGraphic) {
         this.physics.world.createDebugGraphic();

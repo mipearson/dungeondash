@@ -112,7 +112,6 @@ export default class Player {
 
     if (this.staggered && !this.body.touching.none) {
       this.staggerUntil = this.time + staggerDuration;
-      console.log(this.body.touching);
       this.staggered = false;
 
       this.body.setVelocity(0);
