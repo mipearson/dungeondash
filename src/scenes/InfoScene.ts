@@ -26,6 +26,7 @@ export default class InfoScene extends Phaser.Scene {
         "",
         "Use arrow keys to walk around the map!",
         "Press space while moving to dash-attack!",
+        "(debug: Q, tilesets: R)",
         "",
         "Credits & more information at",
         "https://github.com/mipearson/dungeondash",

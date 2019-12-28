@@ -10,7 +10,7 @@ MIT License applies unless otherwise noted.
 
 Get a local instance running with `npm i` and then `npm run start`.
 
-Press `R` in game to see a tilesheet reference, press `R` again to return to the game.
+Press `R` in game to see a tilesheet reference, press `R` again to return to the game. Press `Q` to show the debug layer.
 
 Contributions must be valid typescript & formatted with prettier.js.
 
@@ -18,11 +18,9 @@ Otherwise, go nuts.
 
 ## TODO
 
- * debug key
  * proper typings for mrpas
  * proper typings for dungeon-factory
  * extrude tilesets to avoid webgl issues
- * bring in open source bitmap font
  * doors
  * slimes
  * support window resize
