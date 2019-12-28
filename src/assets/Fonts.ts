@@ -1,6 +1,6 @@
-import Nokia16PNG from "../../assets/privatefonts/nokia16.png";
-import Nokia16XML from "../../assets/privatefonts/nokia16.xml";
+import CasualEncounterPNG from "../../assets/annaanthropy/CasualEncounter.png";
+import CasualEncounterFNT from "../../assets/annaanthropy/CasualEncounter.fnt";
 
 export default {
-  default: [Nokia16PNG, Nokia16XML]
+  default: [CasualEncounterPNG, CasualEncounterFNT]
 };

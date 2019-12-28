@@ -14,7 +14,7 @@ export default class InfoScene extends Phaser.Scene {
   }
 
   create(): void {
-    this.text = this.add.dynamicBitmapText(25, 25, "default", "", 20);
+    this.text = this.add.dynamicBitmapText(25, 25, "default", "", 12);
     this.text.setAlpha(0.7);
     this.lastUpdate = 0;
   }

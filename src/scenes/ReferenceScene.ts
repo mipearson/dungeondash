@@ -25,7 +25,7 @@ export default class ReferenceScene extends Phaser.Scene {
 
   create(): void {
     console.log("create referencescene");
-    this.title = this.add.dynamicBitmapText(20, 10, "default", "", 16);
+    this.title = this.add.dynamicBitmapText(20, 10, "default", "", 12);
     this.previewTileset();
     this.input.keyboard.on("keydown_N", () => {
       this.index += 1;
@@ -91,7 +91,7 @@ export default class ReferenceScene extends Phaser.Scene {
           this.map.tileToWorldY(y),
           "default",
           idx.toString(16),
-          14
+          6
         );
         text.setDepth(10);
         this.group.add(text);
