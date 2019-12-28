@@ -11,7 +11,7 @@
   "author": "Michael Pearson & Others",
   "license": "MIT",
   "dependencies": {
-    "dungeon-factory": "^1.0.6",
+    "dungeoneer": "github:mipearson/dungeoneer#mp-fix-ts-bindings",
     "mrpas": "^2.0.0",
     "parcel": "^1.12.4",
     "phaser": "^3.21.0",

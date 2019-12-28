@@ -1,27 +1,8 @@
-import DungeonFactory from "dungeon-factory";
-
+import Dungeoneer from "dungeoneer";
 import Tile, { TileType } from "./Tile";
 import Slime from "./Slime";
 import Graphics from "../assets/Graphics";
 import DungeonScene from "../scenes/DungeonScene";
-
-interface DungeonFactoryRoom {
-  height: number;
-  width: number;
-  x: number;
-  y: number;
-  getBoundingBox: () => {
-    top: number;
-    left: number;
-    right: number;
-    bottom: number;
-  };
-}
-
-interface DungeonFactoryOutput {
-  tiles: { type: string }[][];
-  rooms: DungeonFactoryRoom[];
-}
 
 export default class Map {
   public readonly tiles: Tile[][];
@@ -36,13 +17,13 @@ export default class Map {
 
   public readonly slimes: Slime[];
 
-  public readonly rooms: DungeonFactoryRoom[];
+  public readonly rooms: Dungeoneer.Room[];
 
   constructor(width: number, height: number, scene: DungeonScene) {
-    const dungeon = DungeonFactory.generate({
+    const dungeon = Dungeoneer.build({
       width: width,
       height: height
-    }) as DungeonFactoryOutput;
+    });
     this.rooms = dungeon.rooms;
     console.log(this.rooms);
 
