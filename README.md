@@ -21,8 +21,6 @@ Otherwise, go nuts.
  * proper typings for mrpas
  * proper typings for dungeon-factory
  * extrude tilesets to avoid webgl issues
- * doors
- * slimes
  * support window resize
 
 ## Credits
@@ -30,3 +28,4 @@ Otherwise, go nuts.
 * Uses [mrpas](https://www.npmjs.com/package/mrpas) to determine the field of view
 * Uses [dungeon-factory](https://www.npmjs.com/package/dungeon-factory) to generate the dungeon
 * `Rogue*.png` files are from the [Rogue Dungeon Tileset 16x16](https://fongoose.itch.io/rogue-dungeon-tileset-16x16) by [fongoose](https://twitter.com/fongoosemike)
+* "CasualEncounter" font from Anna Anthropy's [World of Fonts](https://w.itch.io/world-of-fonts)
