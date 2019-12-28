@@ -1,4 +1,4 @@
-import RogueEnvironment from "../../assets/fongoose/RogueEnvironment16x16.png";
+import RogueEnvironment from "../../assets/fongoose/RogueEnvironment16x16-extruded.png";
 import RoguePlayer from "../../assets/fongoose/RoguePlayer_48x48.png";
 import RogueSlime from "../../assets/fongoose/RogueSlime32x32.png";
 import RogueItems from "../../assets/fongoose/RogueItems16x16.png";
@@ -25,6 +25,8 @@ type GraphicSet = {
   width: number;
   height: number;
   file: string;
+  margin?: number;
+  spacing?: number;
 };
 
 type AnimSet = GraphicSet & {
@@ -35,6 +37,8 @@ const environment = {
   name: "environment",
   width: 16,
   height: 16,
+  margin: 1,
+  spacing: 2,
   file: RogueEnvironment,
   indices: {
     floor: {

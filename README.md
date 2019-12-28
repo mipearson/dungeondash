@@ -18,7 +18,6 @@ Otherwise, go nuts.
 
 ## TODO
 
- * extrude tilesets to avoid webgl issues
  * use `PerformanceObserver` to get a more accurate FPS value
 
 ## Credits

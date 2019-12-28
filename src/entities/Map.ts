@@ -67,7 +67,12 @@ export default class Map {
     });
 
     const dungeonTiles = this.tilemap.addTilesetImage(
-      Graphics.environment.name
+      Graphics.environment.name,
+      Graphics.environment.name,
+      Graphics.environment.width,
+      Graphics.environment.height,
+      Graphics.environment.margin,
+      Graphics.environment.spacing
     );
 
     const groundLayer = this.tilemap
