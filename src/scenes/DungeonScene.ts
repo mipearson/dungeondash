@@ -16,7 +16,6 @@ export default class DungeonScene extends Phaser.Scene {
   slimeGroup: Phaser.GameObjects.Group | null;
   fov: FOVLayer | null;
   tilemap: Phaser.Tilemaps.Tilemap | null;
-  cameraResizeNeeded: boolean;
   roomDebugGraphics?: Phaser.GameObjects.Graphics;
 
   preload(): void {
@@ -39,7 +38,6 @@ export default class DungeonScene extends Phaser.Scene {
     this.player = null;
     this.fov = null;
     this.tilemap = null;
-    this.cameraResizeNeeded = false;
     this.slimes = [];
     this.slimeGroup = null;
   }
@@ -139,10 +137,6 @@ export default class DungeonScene extends Phaser.Scene {
     //   this.physics.add.collider(slime.sprite, map.wallLayer);
     // }
 
-    window.addEventListener("resize", () => {
-      this.cameraResizeNeeded = true;
-    });
-
     this.input.keyboard.on("keydown_R", () => {
       this.scene.stop("InfoScene");
       this.scene.start("ReferenceScene");
@@ -183,13 +177,6 @@ export default class DungeonScene extends Phaser.Scene {
 
     for (let slime of this.slimes) {
       slime.update(time);
-    }
-
-    if (this.cameraResizeNeeded) {
-      // Do this here rather than the resize callback as it limits
-      // how much we'll slow down the game
-      camera.setSize(window.innerWidth, window.innerHeight);
-      this.cameraResizeNeeded = false;
     }
 
     const player = new Phaser.Math.Vector2({

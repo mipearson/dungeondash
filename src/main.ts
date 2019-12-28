@@ -9,9 +9,8 @@ new Phaser.Game({
   height: window.innerHeight,
   render: { pixelArt: true },
   physics: { default: "arcade", arcade: { debug: false, gravity: { y: 0 } } },
-  scene: [DungeonScene, InfoScene, ReferenceScene]
+  scene: [DungeonScene, InfoScene, ReferenceScene],
+  scale: {
+    mode: Phaser.Scale.RESIZE
+  }
 });
-
-// window.addEventListener("resize", () => {
-//   game.resize(window.innerWidth, window.innerHeight);
-// });
