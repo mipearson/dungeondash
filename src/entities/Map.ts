@@ -173,12 +173,12 @@ export default class Map {
   }
 
   withinRoom(x: number, y: number): boolean {
-    // x = x + 1; // Dungeon rooms are offset by one.
-    // y = y + 1;
     return (
       this.rooms.find(r => {
         const { top, left, right, bottom } = r.getBoundingBox();
-        return y >= top - 1 && y <= bottom && x >= left - 1 && x <= right;
+        return (
+          y >= top - 1 && y <= bottom + 1 && x >= left - 1 && x <= right + 1
+        );
       }) != undefined
     );
   }
