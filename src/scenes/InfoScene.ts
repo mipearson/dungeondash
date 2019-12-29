@@ -19,7 +19,7 @@ export default class InfoScene extends Phaser.Scene {
     this.lastUpdate = 0;
   }
 
-  update(time: number, delta: number): void {
+  update(time: number, _: number): void {
     if (time > this.lastUpdate! + 100) {
       this.text!.setText([
         "Dungeon Dash!",
@@ -31,7 +31,7 @@ export default class InfoScene extends Phaser.Scene {
         "Credits & more information at",
         "https://github.com/mipearson/dungeondash",
         "",
-        "FPS: " + (1000 / delta).toFixed(2)
+        "FPS: " + Math.round(this.game.loop.actualFps)
       ]);
       this.lastUpdate = time;
     }

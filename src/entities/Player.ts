@@ -63,6 +63,7 @@ export default class Player {
     this.staggerUntil = 0;
     this.staggered = false;
     const particles = scene.add.particles(Graphics.player.name);
+    particles.setDepth(6);
     this.emitter = particles.createEmitter({
       alpha: { start: 0.7, end: 0, ease: "Cubic.easeOut" },
       follow: this.sprite,

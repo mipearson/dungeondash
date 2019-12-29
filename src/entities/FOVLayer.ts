@@ -83,13 +83,13 @@ export default class FOVLayer {
 
   updateMRPAS(pos: Phaser.Math.Vector2) {
     // TODO: performance?
-    this.map.tiles.forEach(r =>
-      r.forEach(t => {
-        if (t.seen) {
-          t.desiredAlpha = fogAlpha;
+    for (let row of this.map.tiles) {
+      for (let tile of row) {
+        if (tile.seen) {
+          tile.desiredAlpha = fogAlpha;
         }
-      })
-    );
+      }
+    }
 
     this.mrpas!.compute(
       pos.x,
